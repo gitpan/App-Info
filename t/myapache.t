@@ -1,28 +1,31 @@
 #!/usr/bin/perl -w
 
-# $Id: myapache.t,v 1.4 2002/06/05 23:50:42 david Exp $
+# $Id: myapache.t,v 1.7 2002/06/17 19:27:14 david Exp $
 
 use strict;
 use Test::More;
 
 if (exists $ENV{APP_INFO_MAINTAINER}) {
-    plan tests => 26;
+    plan tests => 27;
 } else {
     plan skip_all => "maintainer's internal tests.";
 }
 
 BEGIN { use_ok('App::Info::HTTPD::Apache') }
+BEGIN { use_ok('App::Info::Handler::Carp') }
 
 my @mods = qw(http_core mod_env mod_log_config mod_mime mod_negotiation
               mod_status mod_include mod_autoindex mod_dir mod_cgi mod_asis
               mod_imap mod_actions mod_userdir mod_alias mod_rewrite
               mod_access mod_auth mod_so mod_setenvif mod_ssl mod_perl);
 
-ok( my $apache = App::Info::HTTPD::Apache->new( error_level => 'confess' ),
+ok( my $apache = App::Info::HTTPD::Apache->new( on_error => 'confess' ),
     "Got Object");
 isa_ok($apache, 'App::Info::HTTPD::Apache');
 isa_ok($apache, 'App::Info::HTTPD');
 isa_ok($apache, 'App::Info');
+is( $apache->key_name, 'Apache', "Check key name" );
+
 ok( $apache->installed, "Apache is installed" );
 is( $apache->name, "Apache", "Get name" );
 is( $apache->version, "1.3.23", "Test Version" );

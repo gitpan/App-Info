@@ -1,23 +1,26 @@
 #!/usr/bin/perl -w
 
-# $Id: mypostgres.t,v 1.2 2002/06/05 23:50:42 david Exp $
+# $Id: mypostgres.t,v 1.5 2002/06/17 19:27:14 david Exp $
 
 use strict;
 use Test::More;
 
 if (exists $ENV{APP_INFO_MAINTAINER}) {
-    plan tests => 16;
+    plan tests => 17;
 } else {
     plan skip_all => "maintainer's internal tests.";
 }
 
 BEGIN { use_ok('App::Info::RDBMS::PostgreSQL') }
+BEGIN { use_ok('App::Info::Handler::Carp') }
 
-ok( my $pg = App::Info::RDBMS::PostgreSQL->new( error_level => 'confess' ),
+ok( my $pg = App::Info::RDBMS::PostgreSQL->new( on_error => 'confess' ),
     "Got Object");
 isa_ok($pg, 'App::Info::RDBMS::PostgreSQL');
 isa_ok($pg, 'App::Info::RDBMS');
 isa_ok($pg, 'App::Info');
+is( $pg->key_name, 'PostgreSQL', "Check key name" );
+
 ok( $pg->installed, "PostgreSQL is installed" );
 is( $pg->name, "PostgreSQL", "Get name" );
 is( $pg->version, "7.2.1", "Test Version" );
