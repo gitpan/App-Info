@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: postgres.t 926 2004-12-14 19:30:53Z theory $
+# $Id: postgres.t 954 2004-12-16 01:10:26Z theory $
 
 use strict;
 use Test::More tests => 21;
@@ -20,6 +20,7 @@ ok( my $pg = App::Info::RDBMS::PostgreSQL->new(
     search_bin_dirs => $bin_dir,
     search_exe_names => "pg_config$ext",
     search_createdb_names => "mycreatedb$ext",
+    search_postgres_names => "postgres$ext",
 ), "Got Object");
 
 isa_ok($pg, 'App::Info::RDBMS::PostgreSQL');

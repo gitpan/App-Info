@@ -1,6 +1,6 @@
 package App::Info::Lib::Iconv;
 
-# $Id: Iconv.pm 902 2004-12-07 00:48:37Z theory $
+# $Id: Iconv.pm 928 2004-12-14 20:02:44Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::Util;
 use App::Info::Lib;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.43';
+$VERSION = '0.44';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;

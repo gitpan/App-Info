@@ -1,6 +1,6 @@
 package App::Info::RDBMS::SQLite;
 
-# $Id: SQLite.pm 902 2004-12-07 00:48:37Z theory $
+# $Id: SQLite.pm 1067 2005-01-07 17:39:28Z theory $
 
 =head1 NAME
 
@@ -46,7 +46,7 @@ use App::Info::Util;
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.43';
+$VERSION = '0.44';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -109,17 +109,18 @@ sub new {
             error    => 'Not an executable'
         );
     } else {
+        $self->info("Looking for DBD::SQLite");
         # Try using DBD::SQLite, which includes SQLite.
         for my $dbd ('SQLite', 'SQLite2') {
-            if (eval "use DBD::$dbd") {
-                # Looks like DBD::SQLite is installed. Set up a temp database
-                # handle so we can get information from it.
-                require DBI;
-                $self->{dbfile} = $u->catfile($u->tmpdir, 'tmpdb');
-                $self->{dbh} = DBI->connect("dbi:$dbd:dbname=$self->{dbfile}","","");
-                # I don't think there's any way to really confirm, so just return.
-                return $self;
-            }
+            eval "use DBD::$dbd";
+            next if $@;
+            # Looks like DBD::SQLite is installed. Set up a temp database
+            # handle so we can get information from it.
+            require DBI;
+            $self->{dbfile} = $u->catfile($u->tmpdir, 'tmpdb');
+            $self->{dbh} = DBI->connect("dbi:$dbd:dbname=$self->{dbfile}","","");
+            # I don't think there's any way to really confirm, so just return.
+            return $self;
         }
 
         # Handle an unknown value.

@@ -1,6 +1,6 @@
 package App::Info::Handler::Prompt;
 
-# $Id: Prompt.pm 902 2004-12-07 00:48:37Z theory $
+# $Id: Prompt.pm 928 2004-12-14 20:02:44Z theory $
 
 =head1 NAME
 
@@ -45,7 +45,7 @@ events.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.43';
+$VERSION = '0.44';
 @ISA = qw(App::Info::Handler);
 
 # Register ourselves.

@@ -1,6 +1,6 @@
 package App::Info::Handler;
 
-# $Id: Handler.pm 902 2004-12-07 00:48:37Z theory $
+# $Id: Handler.pm 928 2004-12-14 20:02:44Z theory $
 
 =head1 NAME
 
@@ -35,7 +35,7 @@ handlers, read on!
 
 use strict;
 use vars qw($VERSION);
-$VERSION = '0.43';
+$VERSION = '0.44';
 
 my %handlers;
 

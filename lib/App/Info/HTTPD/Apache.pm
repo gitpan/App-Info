@@ -1,6 +1,6 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 926 2004-12-14 19:30:53Z theory $
+# $Id: Apache.pm 969 2004-12-16 22:29:37Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.43';
+$VERSION = '0.44';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -1529,7 +1529,7 @@ my $find_exe = sub  {
 
     unless ($self->{$key}) {
 	my $bin = $self->bin_dir or return;
-        if (my $exe = $u->first_cat_exe([$self->$meth, $exe], $bin)) {
+        if (my $exe = $u->first_cat_exe([$self->$meth(), $exe], $bin)) {
 	    # We found it. Confirm.
 	    $self->{$key} = $self->confirm(
 		key      => $key,
