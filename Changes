@@ -1,5 +1,22 @@
 Revision history for Perl extension App::Info.
 
+0.10  Wed Jun  5 23:58:54 2002
+      - Added new error_level parameter to new(). This tells App::Info objects
+        how to handle errors on an object-by-object basis. The new base class
+        method error() is for subclasses to use for throwing errors, and
+        last_error() is for client code to access the last error in non-fatal
+        error modes. See App::Info for complete documentation. This is the major
+        change the triggered the (mild) version number jump.
+      - Reworked all application subclasses to use the new error() method.
+      - Changed all application subclasses so that they're no longer singleton
+        classes. Each new object construction looks for application metatdata
+        all over again.
+      - Updated documentation on subclassing to reflect changes.
+      - Added first_exe() and first_cat_exe() to App::Info::Util. Changed
+        RDBMS::PostgreSQL, HTTP::Apache, and Lib::Iconv to use them.
+      - Added more directories in which to search for the Apache server
+        executable, thanks to work by Dave Rolsky.
+
 0.06  Wed Jun  5 15:36:36 2002
       - Fixed all version tests in test scripts to check for definedness
         rather than truth, so that version numbers that are "0" will be

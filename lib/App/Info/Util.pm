@@ -1,6 +1,6 @@
 package App::Info::Util;
 
-# $Id: Util.pm,v 1.15 2002/06/05 14:45:37 david Exp $
+# $Id: Util.pm,v 1.18 2002/06/05 23:56:23 david Exp $
 
 =head1 NAME
 
@@ -48,7 +48,7 @@ use strict;
 use File::Spec ();
 use vars qw(@ISA $VERSION);
 @ISA = qw(File::Spec);
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 my %path_dems = (MacOS   => qr',',
                  MSWin32 => qr';',
@@ -150,6 +150,21 @@ sub first_file {
     return;
 }
 
+=head2 first_exe
+
+  my $exe = $util->first_exe(@exelist);
+
+Examines each of the files in @exelist and returns the first one that exists
+on the file system as an executable file. Directories will be ignored.
+
+=cut
+
+sub first_exe {
+    shift;
+    foreach (@_) { return $_ if -f && -x }
+    return;
+}
+
 =head2 first_cat_path
 
   my $file = $util->first_cat_path('ick.txt', @paths);
@@ -226,6 +241,29 @@ sub first_cat_dir {
         foreach my $f (@$files) {
             my $path = $self->catfile($p, $f);
             return $p if -e $path;
+        }
+    }
+    return;
+}
+
+=head2 first_cat_exe
+
+  my $exe = $util->first_cat_exe('ick.txt', @paths);
+  $exe = $util->first_cat_exe(['this.txt', 'that.txt'], @paths);
+
+Funtionally identical to C<first_cat_path()>, except that it returns the full
+path to the first executable file found, rather than simply the first file
+found.
+
+=cut
+
+sub first_cat_exe {
+    my $self = shift;
+    my $files = ref $_[0] ? shift() : [shift()];
+    foreach my $p (@_) {
+        foreach my $f (@$files) {
+            my $path = $self->catfile($p, $f);
+            return $path if -f $path && -x $path;
         }
     }
     return;

@@ -12,6 +12,7 @@ lib/App/Info/RDBMS.pm
 lib/App/Info/RDBMS/PostgreSQL.pm
 lib/App/Info/Util.pm
 t/apache.t
+t/error.t
 t/expat.t
 t/iconv.t
 t/myapache.t
