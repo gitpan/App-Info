@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm,v 1.12 2002/06/04 22:06:44 david Exp $
+# $Id: Info.pm,v 1.15 2002/06/05 15:32:15 david Exp $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ information on implementing new subclasses.
 use strict;
 use Carp ();
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 my $croak = sub {
     my ($caller, $meth) = @_;
