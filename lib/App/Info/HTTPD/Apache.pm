@@ -1,6 +1,6 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 879 2004-11-27 19:36:54Z theory $
+# $Id: Apache.pm 883 2004-11-28 20:03:31Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.40';
+$VERSION = '0.41';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -924,8 +924,14 @@ sub bin_dir {
     unless (exists $self->{bin_dir}) {{
         my $root = $self->httpd_root || last; # Double braces allow this.
         $self->info("Searching for bin directory");
-        $self->{bin_dir} = $u->first_cat_path('bin', $root)
-          or $self->error("Cannot find bin directory");
+        if (WIN32) {
+            # Windows thinks that the bin directory is the same as the root.
+            $self->{bin_dir} = $root;
+        } else {
+            # Other platforms have a "bin" director under the root.
+            $self->{bin_dir} = $u->first_cat_path('bin', $root)
+              or $self->error("Cannot find bin directory");
+        }
     }}
 
     # Handle unknown value.
