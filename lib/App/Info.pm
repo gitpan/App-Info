@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm,v 1.35 2002/06/27 20:23:40 david Exp $
+# $Id: Info.pm,v 1.37 2002/06/30 22:18:40 david Exp $
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ use App::Info::Handler;
 use App::Info::Request;
 use vars qw($VERSION);
 
-$VERSION = '0.20';
+$VERSION = '0.21';
 
 ##############################################################################
 ##############################################################################
@@ -967,7 +967,7 @@ Here's an example:
       if (my $exe = $util->first_exe('/bin/myapp', '/usr/bin/myapp')) {
           # Confirm it.
           $self->{exe} =
-            $self->confirm( key      =>    'binary',
+            $self->confirm( key      => 'binary',
                             prompt   => 'Path to your executable?',
                             value    => $exe,
                             callback => sub { -x },
@@ -1101,7 +1101,7 @@ Feel free to drop me an email if you discover any bugs. Patches welcome.
 
 =head1 AUTHOR
 
-David Wheeler <david@wheeler.net>
+David Wheeler <L<david@wheeler.net|"david@wheeler.net">>
 
 =head1 SEE ALSO
 

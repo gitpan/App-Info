@@ -19,6 +19,7 @@ lib/App/Info/Util.pm
 t/apache.t
 t/apache_info.t
 t/carp.t
+t/confirm.t
 t/expat.t
 t/expat_info.t
 t/iconv.t

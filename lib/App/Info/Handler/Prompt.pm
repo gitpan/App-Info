@@ -1,6 +1,6 @@
 package App::Info::Handler::Prompt;
 
-# $Id: Prompt.pm,v 1.8 2002/06/16 04:12:50 david Exp $
+# $Id: Prompt.pm,v 1.10 2002/07/01 03:31:32 david Exp $
 
 =head1 NAME
 
@@ -45,7 +45,7 @@ events.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.20';
+$VERSION = '0.21';
 @ISA = qw(App::Info::Handler);
 
 # Register ourselves.
@@ -92,7 +92,7 @@ my $get_ans = sub {
     } else {
         print "$def\n" if defined $def;
     }
-    return !defined $ans || $ans eq '' ? $def : $ans;
+    return $ans;
 };
 
 sub handler {
@@ -108,12 +108,16 @@ sub handler {
 
         # Get the answer.
         $ans = $get_ans->($msg, $self->{tty}, $def);
+        # Just return if they entered an empty string or we couldnt' get an
+        # answer.
+        return 1 unless defined $ans && $ans ne '';
 
         # Validate the answer.
         my $err = $req->error;
-        while (!$req->callback($ans)) {
+        while (!$req->value($ans)) {
             print "$err: '$ans'\n";
-            $ans = $get_ans->($msg, $self->{tty});
+            $ans = $get_ans->($msg, $self->{tty}, $def);
+            return 1 unless defined $ans && $ans ne '';
         }
 
     } elsif ($type eq 'info') {
@@ -126,9 +130,6 @@ sub handler {
         # This shouldn't happen.
         Carp::croak("Invalid request type '$type'");
     }
-
-    # Save the answer.
-    $req->value($ans);
 
     # Return true to indicate that we've handled the request.
     return 1;
@@ -143,7 +144,7 @@ Feel free to drop me an email if you discover any bugs. Patches welcome.
 
 =head1 AUTHOR
 
-David Wheeler <david@wheeler.net>
+David Wheeler <L<david@wheeler.net|"david@wheeler.net">>
 
 =head1 SEE ALSO
 
