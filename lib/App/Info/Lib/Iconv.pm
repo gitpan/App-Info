@@ -1,6 +1,6 @@
 package App::Info::Lib::Iconv;
 
-# $Id: Iconv.pm 859 2004-11-19 23:59:15Z theory $
+# $Id: Iconv.pm 861 2004-11-20 00:15:32Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::Util;
 use App::Info::Lib;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.29';
+$VERSION = '0.30';
 
 my $u = App::Info::Util->new;
 

@@ -1,6 +1,6 @@
 package App::Info::Lib::Expat;
 
-# $Id: Expat.pm 859 2004-11-19 23:59:15Z theory $
+# $Id: Expat.pm 862 2004-11-20 19:11:40Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::Lib;
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.29';
+$VERSION = '0.30';
 
 my $u = App::Info::Util->new;
 
@@ -114,17 +114,13 @@ sub new {
     my $self = shift->SUPER::new(@_);
     # Find libexpat.
     $self->info("Searching for Expat libraries");
-    my @paths = grep { defined and length }
-      ( split(' ', $Config{libsdirs}),
-        split(' ', $Config{loclibpth}),
-        '/sw/lib' );
 
     my $libs = ["libexpat.so", "libexpat.so.0", "libexpat.so.0.0.1",
                 "libexpat.dylib", "libexpat.0.dylib", "libexpat.0.0.1.dylib",
                 "libexpat.a", "libexpat.la"];
 
     my $cb = sub { $u->first_cat_dir($libs, $_) };
-    if (my $lexpat = $u->first_cat_dir($libs, @paths)) {
+    if (my $lexpat = $u->first_cat_dir($libs, $u->lib_dirs, '/sw/lib')) {
         # We found libexpat. Confirm.
         $self->{libexpat} =
           $self->confirm( key      => 'libexpat',
@@ -583,14 +579,10 @@ sub so_lib_dir {
     return unless $self->{libexpat};
     unless (exists $self->{so_lib_dir}) {
         $self->info("Searching for shared object library directory");
-        my @paths = grep { defined and length }
-          ( split(' ', $Config{libsdirs}),
-            split(' ', $Config{loclibpth}),
-                  '/sw/lib' );
         my $libs = ["libexpat.so", "libexpat.so.0", "libexpat.so.0.0.1",
                     "libexpat.dylib", "libexpat.0.dylib",
                     "libexpat.0.0.1.dylib"];
-        if (my $dir = $u->first_cat_dir($libs, @paths)) {
+        if (my $dir = $u->first_cat_dir($libs, $u->lib_dirs, '/sw/lib')) {
             $self->{so_lib_dir} = $dir;
         } else {
             $self->error("Cannot find shared object library direcory");

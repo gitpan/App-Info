@@ -1,12 +1,12 @@
 package App::Info::Lib;
 
-# $Id: Lib.pm 859 2004-11-19 23:59:15Z theory $
+# $Id: Lib.pm 861 2004-11-20 00:15:32Z theory $
 
 use strict;
 use App::Info;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info);
-$VERSION = '0.29';
+$VERSION = '0.30';
 
 1;
 __END__

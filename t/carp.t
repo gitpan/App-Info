@@ -1,11 +1,11 @@
 #!/usr/bin/perl -w
 
-# $Id: carp.t 814 2004-11-03 17:40:06Z theory $
+# $Id: carp.t 862 2004-11-20 19:11:40Z theory $
 
 use strict;
 use Test::More tests => 23;
 
-our $msg = "Error retrieving version";
+my $msg = "Error retrieving version";
 
 # Set up an App::Info subclass to ruin.
 package App::Info::Category::FooApp;
