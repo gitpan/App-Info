@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: sqlite.t 897 2004-12-06 23:28:11Z theory $
+# $Id: sqlite.t 925 2004-12-14 19:19:32Z theory $
 
 use strict;
 use Test::More tests => 18;
@@ -17,7 +17,7 @@ my $executable = catfile $bin_dir, "sqlite3$ext";
 
 ok( my $sqlite = App::Info::RDBMS::SQLite->new(
     search_bin_dirs  => [$bin_dir],
-    search_exe_names => [$executable],
+    search_exe_names => ["sqlite3$ext"],
     search_lib_dirs  => [$lib_dir],
     search_inc_dirs  => [$inc_dir],
 ), "Got Object");
