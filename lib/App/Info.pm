@@ -44,7 +44,7 @@ information on implementing new subclasses.
 use strict;
 use Carp ();
 use vars qw($VERSION);
-$VERSION = '0.12';
+$VERSION = '0.13';
 
 my %error_levels = ( croak   => sub { Carp::croak(@_) },
                      carp    => sub { Carp::carp(@_) },
