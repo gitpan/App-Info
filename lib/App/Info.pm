@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm 845 2004-11-19 02:28:00Z theory $
+# $Id: Info.pm 855 2004-11-19 23:32:11Z theory $
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ use App::Info::Handler;
 use App::Info::Request;
 use vars qw($VERSION);
 
-$VERSION = '0.27';
+$VERSION = '0.28';
 
 ##############################################################################
 ##############################################################################
@@ -1097,11 +1097,12 @@ But I get ahead of myself...
 
 =head1 BUGS
 
-Please send bug reports to <bug-app-info@rt.cpan.org>.
+Please send bug reports to <bug-app-info@rt.cpan.org> or file them at
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
 
 =head1 AUTHOR
 
-David Wheeler <L<david@wheeler.net|"david@wheeler.net">>
+David Wheeler <david@justatheory.com>
 
 =head1 SEE ALSO
 

@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm 845 2004-11-19 02:28:00Z theory $
+# $Id: PostgreSQL.pm 855 2004-11-19 23:32:11Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.27';
+$VERSION = '0.28';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -244,7 +244,7 @@ my $get_version = sub {
     my $data = $get_data->($self, '--version');
     unless ($data) {
         $self->error("Failed to find PostgreSQL version with ".
-                     "`$self->{pg_config} --version");
+                     "`$self->{pg_config} --version`");
             return;
     }
 
@@ -766,13 +766,13 @@ __END__
 
 =head1 BUGS
 
-Report all bugs via the CPAN Request Tracker at
+Please send bug reports to <bug-app-info@rt.cpan.org> or file them at
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
 
 =head1 AUTHOR
 
-David Wheeler <L<david@wheeler.net|"david@wheeler.net">> based on code by Sam
-Tregar <L<sam@tregar.com|"sam@tregar.com">>.
+David Wheeler <david@justatheory.com> based on code by Sam Tregar
+<sam@tregar.com>.
 
 =head1 SEE ALSO
 

@@ -1,6 +1,6 @@
 package App::Info::Handler::Prompt;
 
-# $Id: Prompt.pm 819 2004-11-03 18:02:20Z theory $
+# $Id: Prompt.pm 855 2004-11-19 23:32:11Z theory $
 
 =head1 NAME
 
@@ -45,7 +45,7 @@ events.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.27';
+$VERSION = '0.28';
 @ISA = qw(App::Info::Handler);
 
 # Register ourselves.
@@ -140,12 +140,12 @@ __END__
 
 =head1 BUGS
 
-Report all bugs via the CPAN Request Tracker at
+Please send bug reports to <bug-app-info@rt.cpan.org> or file them at
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
 
 =head1 AUTHOR
 
-David Wheeler <L<david@wheeler.net|"david@wheeler.net">>
+David Wheeler <david@justatheory.com>
 
 =head1 SEE ALSO
 

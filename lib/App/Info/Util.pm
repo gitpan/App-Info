@@ -1,6 +1,6 @@
 package App::Info::Util;
 
-# $Id: Util.pm 819 2004-11-03 18:02:20Z theory $
+# $Id: Util.pm 855 2004-11-19 23:32:11Z theory $
 
 =head1 NAME
 
@@ -48,7 +48,7 @@ use strict;
 use File::Spec ();
 use vars qw(@ISA $VERSION);
 @ISA = qw(File::Spec);
-$VERSION = '0.27';
+$VERSION = '0.28';
 
 my %path_dems = (MacOS   => qr',',
                  MSWin32 => qr';',
@@ -433,12 +433,12 @@ __END__
 
 =head1 BUGS
 
-Report all bugs via the CPAN Request Tracker at
+Please send bug reports to <bug-app-info@rt.cpan.org> or file them at
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
 
 =head1 AUTHOR
 
-David Wheeler <L<david@wheeler.net|"david@wheeler.net">>
+David Wheeler <david@justatheory.com>
 
 =head1 SEE ALSO
 

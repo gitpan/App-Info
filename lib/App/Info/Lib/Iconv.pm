@@ -1,6 +1,6 @@
 package App::Info::Lib::Iconv;
 
-# $Id: Iconv.pm 819 2004-11-03 18:02:20Z theory $
+# $Id: Iconv.pm 855 2004-11-19 23:32:11Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::Util;
 use App::Info::Lib;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.27';
+$VERSION = '0.28';
 
 my $u = App::Info::Util->new;
 
@@ -743,13 +743,13 @@ Improve this class by borrowing code from Matt Seargent's AxKit F<Makefil.PL>.
 
 =head1 BUGS
 
-Report all bugs via the CPAN Request Tracker at
+Please send bug reports to <bug-app-info@rt.cpan.org> or file them at
 L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
 
 =head1 AUTHOR
 
-David Wheeler <L<david@wheeler.net|"david@wheeler.net">> based on code by Sam
-Tregar <L<sam@tregar.com|"sam@tregar.com">>.
+David Wheeler <david@justatheory.com> based on code by Sam Tregar
+<sam@tregar.com>.
 
 =head1 SEE ALSO
 
