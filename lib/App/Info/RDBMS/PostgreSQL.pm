@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm 817 2004-11-03 17:55:05Z theory $
+# $Id: PostgreSQL.pm 845 2004-11-19 02:28:00Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,8 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.26';
+$VERSION = '0.27';
+use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
 
@@ -71,9 +72,9 @@ directories:
 
 =over 4
 
-=item $ENV{POSTGRES_HOME}/bin
+=item $ENV{POSTGRES_HOME}/bin (if $ENV{POSTGRES_HOME} exists)
 
-=item $ENV{POSTGRES_LIB}/../bin
+=item $ENV{POSTGRES_LIB}/../bin (if $ENV{POSTGRES_LIB} exists)
 
 =item /usr/local/pgsql/bin
 
@@ -90,6 +91,8 @@ directories:
 =item /usr/sbin
 
 =item /bin
+
+=item C:\Program Files\PostgreSQL\bin
 
 =back
 
@@ -128,22 +131,26 @@ sub new {
          /usr/local/sbin
          /usr/bin
          /usr/sbin
-         /bin));
+         /bin),
+      'C:\Program Files\PostgreSQL\bin');
 
     unshift @paths, "$ENV{POSTGRES_HOME}/bin" if exists $ENV{POSTGRES_HOME};
     unshift @paths, "$ENV{POSTGRES_LIB}/../bin" if exists $ENV{POSTGRES_LIB};
 
-    if (my $cfg = $u->first_cat_exe('pg_config', @paths)) {
+    my $exe = 'pg_config';
+    $exe .= '.exe' if WIN32;
+
+    if (my $cfg = $u->first_cat_exe($exe, @paths)) {
         # We found it. Confirm.
         $self->{pg_config} = $self->confirm( key      => 'pg_config',
-                                             prompt   => 'Path to pg_config?',
+                                             prompt   => "Path to $exe?",
                                              value    => $cfg,
                                              callback => sub { -x },
                                              error    => 'Not an executable');
     } else {
         # Handle an unknown value.
         $self->{pg_config} = $self->unknown( key      => 'pg_config',
-                                             prompt   => 'Path to pg_config?',
+                                             prompt   => "Path to $exe?",
                                              callback => sub { -x },
                                              error    => 'Not an executable');
     }
@@ -154,8 +161,8 @@ sub new {
 # We'll use this code reference as a common way of collecting data.
 my $get_data = sub {
     return unless $_[0]->{pg_config};
-    $_[0]->info("Executing `$_[0]->{pg_config} $_[1]`");
-    my $info = `$_[0]->{pg_config} $_[1]`;
+    $_[0]->info(qq{Executing `"$_[0]->{pg_config}" $_[1]`});
+    my $info = `"$_[0]->{pg_config}" $_[1]`;
     chomp $info;
     return $info;
 };
@@ -253,6 +260,7 @@ my $get_version = sub {
     if ($version) {
         my ($x, $y, $z) = $version =~ /(\d+)\.(\d+).(\d+)/;
         if (defined $x and defined $y and defined $z) {
+            # Beta/devel/release candidates are treated as patch level "0"
             @{$self}{qw(version major minor patch)} =
               ($version, $x, $y, $z);
         } elsif ($version =~ /(\d+)\.(\d+)/) {
@@ -685,6 +693,52 @@ sub so_lib_dir {
 
 ##############################################################################
 
+=head3 configure options
+
+  my $configure = $pg->configure;
+
+Returns the options with which the PostgreSQL server was
+configured. App::Info::RDBMS::PostgreSQL gathers the configure data from the
+system call C<`pg_config --configure`>.
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Executing `pg_config --configure`
+
+=item error
+
+Cannot find configure information
+
+=item unknown
+
+Enter PostgreSQL configuration options
+
+=back
+
+=cut
+
+sub configure {
+    my $self = shift;
+    return unless $self->{pg_config};
+    unless (exists $self->{configure} ) {
+        if (my $conf = $get_data->($self, '--configure')) {
+            $self->{configure} = $conf;
+        } else {
+            # Configure can be empty, so just make sure it exists and is
+            # defined. Don't prompt.
+            $self->{configure} = '';
+        }
+    }
+
+    return $self->{configure};
+}
+
+##############################################################################
+
 =head3 home_url
 
   my $home_url = $pg->home_url;
@@ -705,7 +759,7 @@ Returns the PostgreSQL download URL.
 
 =cut
 
-sub download_url { "http://www.ca.postgresql.org/sitess.html" }
+sub download_url { "http://www.postgresql.org/mirrors-ftp.html" }
 
 1;
 __END__

@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 
-# $Id: postgres.t 682 2004-09-28 05:59:10Z theory $
+# $Id: postgres.t 826 2004-11-08 17:35:06Z theory $
 
 use strict;
-use Test::More tests => 17;
+use Test::More tests => 18;
 
 BEGIN { use_ok('App::Info::RDBMS::PostgreSQL') }
 
@@ -23,6 +23,7 @@ if ($pg->installed) {
     ok( $pg->bin_dir, "Got bin_dir" );
     ok( $pg->so_lib_dir, "Got so lib dir" );
     ok( $pg->inc_dir, "Got inc dir" );
+    ok( defined $pg->configure, "Got configure" );
 } else {
     ok( !$pg->installed, "PostgreSQL is not installed" );
     ok( !$pg->name, "Don't got name" );
@@ -34,6 +35,7 @@ if ($pg->installed) {
     ok( !$pg->bin_dir, "Don't got bin_dir" );
     ok( !$pg->so_lib_dir, "Don't got so lib dir" );
     ok( !$pg->inc_dir, "Don't got inc dir" );
+    ok( !$pg->configure, "Don't got configure" );
 }
 ok( $pg->home_url, "Get home URL" );
 ok( $pg->download_url, "Get download URL" );

@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm 817 2004-11-03 17:55:05Z theory $
+# $Id: Info.pm 845 2004-11-19 02:28:00Z theory $
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ use App::Info::Handler;
 use App::Info::Request;
 use vars qw($VERSION);
 
-$VERSION = '0.26';
+$VERSION = '0.27';
 
 ##############################################################################
 ##############################################################################
@@ -556,7 +556,7 @@ my $handler = sub {
         last if $eh->handler($req);
     }
 
-    # Return the requst.
+    # Return the request.
     return $req;
 };
 

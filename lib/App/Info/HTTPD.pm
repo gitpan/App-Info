@@ -1,12 +1,12 @@
 package App::Info::HTTPD;
 
-# $Id: HTTPD.pm 817 2004-11-03 17:55:05Z theory $
+# $Id: HTTPD.pm 819 2004-11-03 18:02:20Z theory $
 
 use strict;
 use App::Info;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info);
-$VERSION = '0.26';
+$VERSION = '0.27';
 
 my $croak = sub {
     my ($caller, $meth) = @_;
