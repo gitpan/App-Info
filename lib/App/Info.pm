@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm,v 1.41 2002/08/08 19:19:17 david Exp $
+# $Id: Info.pm,v 1.43 2003/08/26 01:02:08 david Exp $
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ use App::Info::Handler;
 use App::Info::Request;
 use vars qw($VERSION);
 
-$VERSION = '0.23';
+$VERSION = '0.24';
 
 ##############################################################################
 ##############################################################################
@@ -1161,7 +1161,7 @@ App::Info::Handler subclasses.
 
 Copyright (c) 2002, David Wheeler. All Rights Reserved.
 
-This module is free software; you can redistribute it and/or modify it under the
-same terms as Perl itself.
+This module is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
 
 =cut

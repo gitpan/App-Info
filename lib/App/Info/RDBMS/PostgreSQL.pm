@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm,v 1.22 2002/08/08 19:19:18 david Exp $
+# $Id: PostgreSQL.pm,v 1.25 2003/08/26 01:02:08 david Exp $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.22';
+$VERSION = '0.23';
 
 my $u = App::Info::Util->new;
 
@@ -70,6 +70,10 @@ defined by C<File::Spec-E<gt>path>. Failing that, it searches the following
 directories:
 
 =over 4
+
+=item $ENV{POSTGRES_HOME}/bin
+
+=item $ENV{POSTGRES_LIB}/../bin
 
 =item /usr/local/pgsql/bin
 
@@ -124,6 +128,9 @@ sub new {
          /usr/bin
          /usr/sbin
          /bin));
+
+    unshift @paths, "$ENV{POSTGRES_HOME}/bin" if exists $ENV{POSTGRES_HOME};
+    unshift @paths, "$ENV{POSTGRES_LIB}/../bin" if exists $ENV{POSTGRES_LIB};
 
     if (my $cfg = $u->first_cat_exe('pg_config', @paths)) {
         # We found it. Confirm.
@@ -247,6 +254,10 @@ my $get_version = sub {
         if (defined $x and defined $y and defined $z) {
             @{$self}{qw(version major minor patch)} =
               ($version, $x, $y, $z);
+        } elsif ($version =~ /(\d+)\.(\d+)beta\d+/) {
+            # Beta versions are treated as patch level "0"
+            @{$self}{qw(version major minor patch)} =
+              ($version, $1, $2, 0);
         } else {
             $self->error("Failed to parse PostgreSQL version parts from " .
                          "string '$version'");
