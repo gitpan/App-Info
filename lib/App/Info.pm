@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm,v 1.17 2002/06/05 21:36:40 david Exp $
+# $Id: Info.pm,v 1.19 2002/06/08 03:01:50 david Exp $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ information on implementing new subclasses.
 use strict;
 use Carp ();
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 my %error_levels = ( croak   => sub { Carp::croak(@_) },
                      carp    => sub { Carp::carp(@_) },
                      cluck   => sub { Carp::cluck(@_) },
@@ -76,7 +76,12 @@ sub new {
     # Fail if the method isn't overridden.
     $croak->($pkg, 'new') if $class eq __PACKAGE__;
     # Make sure we have an error level.
-    $p{error_level} ||= 'carp';
+    if (exists $p{error_level}) {
+        $error_levels{$p{error_level}}
+          or Carp::croak("Invalid error_level '$p{error_level}'");
+    } else {
+        $p{error_level} ||= 'carp';
+    }
     # Do it!
     return bless \%p, $class;
 }
@@ -160,7 +165,7 @@ Ignores the error.
 In the cases of "cluck", "carp", "warn", and "silent", the last error can
 always be retrieved via the C<last_error()> method.
 
-=head1 PUBLIC OBJECT METHODS
+=head1 OBJECT METHODS
 
 =head2 installed
 
@@ -361,8 +366,8 @@ David Wheeler <david@wheeler.net>
 L<App::Info::Lib|App::Info::HTTPD>,
 L<App::Info::Lib|App::Info::RDBMS>,
 L<App::Info::Lib|App::Info::Lib>,
-L<App::Info::HTTPD::Apache|App::Info::HTTPD::Apache>
-L<App::Info::RDBMS::PostgreSQL|App::Info::RDBMS::PostgreSQL>
+L<App::Info::HTTPD::Apache|App::Info::HTTPD::Apache>,
+L<App::Info::RDBMS::PostgreSQL|App::Info::RDBMS::PostgreSQL>,
 L<App::Info::Lib|App::Info::Lib::Expat>,
 L<App::Info::Lib|App::Info::Lib::Iconv>
 

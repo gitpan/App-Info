@@ -1,5 +1,13 @@
 Revision history for Perl extension App::Info.
 
+0.11  Sat Jun  8 05:49:40 2002
+      - Improved validation for the error_level parameter.
+      - In distribution tests, no longer testing to see that user and group
+        methods in HTTP::Apache return values when Apache is installed, as
+        sometimes folks don't have User and Group directives set in their
+        httpd.conf files. Grrr...
+      - Fixed bareword references in Makefile.PL.
+
 0.10  Wed Jun  5 23:58:54 2002
       - Added new error_level parameter to new(). This tells App::Info objects
         how to handle errors on an object-by-object basis. The new base class
