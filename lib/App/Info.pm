@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm,v 1.38 2002/07/03 17:33:18 david Exp $
+# $Id: Info.pm,v 1.41 2002/08/08 19:19:17 david Exp $
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ use App::Info::Handler;
 use App::Info::Request;
 use vars qw($VERSION);
 
-$VERSION = '0.22';
+$VERSION = '0.23';
 
 ##############################################################################
 ##############################################################################
@@ -66,7 +66,7 @@ my $croak = sub {
     my ($caller, $meth) = @_;
     $caller = ref $caller || $caller;
     if ($caller eq __PACKAGE__) {
-        $meth = __PACKAGE__ . '::' . shift;
+        $meth = __PACKAGE__ . '::' . $meth;
         Carp::croak(__PACKAGE__ . " is an abstract base class. Attempt to " .
                     " call non-existent method $meth");
     } else {
@@ -1097,7 +1097,8 @@ But I get ahead of myself...
 
 =head1 BUGS
 
-Feel free to drop me an email if you discover any bugs. Patches welcome.
+Report all bugs via the CPAN Request Tracker at
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
 
 =head1 AUTHOR
 
