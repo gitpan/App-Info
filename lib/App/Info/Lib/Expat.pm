@@ -1,6 +1,6 @@
 package App::Info::Lib::Expat;
 
-# $Id: Expat.pm,v 1.29 2003/08/26 01:50:20 david Exp $
+# $Id: Expat.pm 817 2004-11-03 17:55:05Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::Lib;
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.22';
+$VERSION = '0.26';
 
 my $u = App::Info::Util->new;
 
@@ -662,7 +662,7 @@ L<http://expat.sourceforge.net/> is the Expat home page.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

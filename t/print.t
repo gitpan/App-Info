@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: print.t,v 1.5 2002/06/21 05:43:12 david Exp $
+# $Id: print.t 682 2004-09-28 05:59:10Z theory $
 
 # Make sure that we can use the stuff that's in our local lib directory.
 BEGIN {

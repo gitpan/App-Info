@@ -1,6 +1,6 @@
 package App::Info::Handler;
 
-# $Id: Handler.pm,v 1.12 2003/08/26 01:50:19 david Exp $
+# $Id: Handler.pm 817 2004-11-03 17:55:05Z theory $
 
 =head1 NAME
 
@@ -35,7 +35,7 @@ handlers, read on!
 
 use strict;
 use vars qw($VERSION);
-$VERSION = '0.22';
+$VERSION = '0.26';
 
 my %handlers;
 
@@ -297,7 +297,7 @@ App::Info clients.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

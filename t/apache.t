@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: apache.t,v 1.12 2002/06/17 19:27:14 david Exp $
+# $Id: apache.t 682 2004-09-28 05:59:10Z theory $
 
 use strict;
 use Test::More tests => 27;

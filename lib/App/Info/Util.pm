@@ -1,6 +1,6 @@
 package App::Info::Util;
 
-# $Id: Util.pm,v 1.22 2003/08/26 01:50:19 david Exp $
+# $Id: Util.pm 817 2004-11-03 17:55:05Z theory $
 
 =head1 NAME
 
@@ -48,7 +48,7 @@ use strict;
 use File::Spec ();
 use vars qw(@ISA $VERSION);
 @ISA = qw(File::Spec);
-$VERSION = '0.22';
+$VERSION = '0.26';
 
 my %path_dems = (MacOS   => qr',',
                  MSWin32 => qr';',
@@ -448,7 +448,7 @@ L<App::Info::RDBMS::PostgreSQL|App::Info::RDBMS::PostgreSQL>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

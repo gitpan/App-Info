@@ -1,12 +1,12 @@
 package App::Info::HTTPD;
 
-# $Id: HTTPD.pm,v 1.10 2003/08/26 01:50:19 david Exp $
+# $Id: HTTPD.pm 817 2004-11-03 17:55:05Z theory $
 
 use strict;
 use App::Info;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info);
-$VERSION = '0.22';
+$VERSION = '0.26';
 
 my $croak = sub {
     my ($caller, $meth) = @_;
@@ -68,7 +68,7 @@ L<App::Info::HTTPD::Apache|App::Info::HTTPD::Apache>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

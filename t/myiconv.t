@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: myiconv.t,v 1.8 2003/12/11 20:47:22 david Exp $
+# $Id: myiconv.t 682 2004-09-28 05:59:10Z theory $
 
 use strict;
 use Test::More;

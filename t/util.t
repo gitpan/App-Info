@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: util.t,v 1.8 2002/06/08 16:06:49 david Exp $
+# $Id: util.t 682 2004-09-28 05:59:10Z theory $
 
 use strict;
 use Test::More tests => 20;

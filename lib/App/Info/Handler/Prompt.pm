@@ -1,6 +1,6 @@
 package App::Info::Handler::Prompt;
 
-# $Id: Prompt.pm,v 1.12 2003/08/26 01:50:20 david Exp $
+# $Id: Prompt.pm 817 2004-11-03 17:55:05Z theory $
 
 =head1 NAME
 
@@ -45,7 +45,7 @@ events.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.22';
+$VERSION = '0.26';
 @ISA = qw(App::Info::Handler);
 
 # Register ourselves.
@@ -162,7 +162,7 @@ App::Info event handlers.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

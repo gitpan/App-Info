@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: postgres.t,v 1.7 2002/06/17 19:27:14 david Exp $
+# $Id: postgres.t 682 2004-09-28 05:59:10Z theory $
 
 use strict;
 use Test::More tests => 17;

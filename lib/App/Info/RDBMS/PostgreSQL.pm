@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm,v 1.27 2003/11/17 21:12:32 david Exp $
+# $Id: PostgreSQL.pm 817 2004-11-03 17:55:05Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.23';
+$VERSION = '0.26';
 
 my $u = App::Info::Util->new;
 
@@ -122,6 +122,7 @@ sub new {
     my @paths = ($u->path,
       qw(/usr/local/pgsql/bin
          /usr/local/postgres/bin
+         /usr/lib/postgresql/bin
          /opt/pgsql/bin
          /usr/local/bin
          /usr/local/sbin
@@ -733,7 +734,7 @@ L<http://www.postgresql.org/> is the PostgreSQL home page.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

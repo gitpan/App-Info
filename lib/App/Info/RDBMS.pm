@@ -1,12 +1,12 @@
 package App::Info::RDBMS;
 
-# $Id: RDBMS.pm,v 1.9 2003/08/26 01:50:19 david Exp $
+# $Id: RDBMS.pm 817 2004-11-03 17:55:05Z theory $
 
 use strict;
 use App::Info;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info);
-$VERSION = '0.22';
+$VERSION = '0.26';
 
 1;
 __END__
@@ -44,7 +44,7 @@ L<App::Info::RDBMS::PostgreSQL|App::Info::RDBMS::PostgreSQL>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.
