@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: sqlite_info.t 862 2004-11-20 19:11:40Z theory $
+# $Id: sqlite_info.t 866 2004-11-23 19:38:45Z theory $
 
 use strict;
 use Test::More tests => 17;
@@ -26,7 +26,7 @@ BEGIN { use_ok('App::Info::RDBMS::SQLite') }
 ok( my $info = EventTest->new, "Create info EventTest" );
 ok( my $pg = App::Info::RDBMS::SQLite->new( on_info => $info ),
     "Got Object");
-is( $info->message, "Looking for sqlite3 or sqlite",
+is( $info->message, "Looking for SQLite",
     "Check constructor info" );
 
 SKIP: {

@@ -1,6 +1,6 @@
 package App::Info::RDBMS::SQLite;
 
-# $Id: SQLite.pm 862 2004-11-20 19:11:40Z theory $
+# $Id: SQLite.pm 879 2004-11-27 19:36:54Z theory $
 
 =head1 NAME
 
@@ -46,7 +46,7 @@ use App::Info::Util;
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.30';
+$VERSION = '0.40';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -62,17 +62,14 @@ my $u = App::Info::Util->new;
 Returns an App::Info::RDBMS::SQLite object. See L<App::Info|App::Info> for a
 complete description of argument parameters.
 
-When it called, C<new()> searches the file system for the F<sqlite3> or
-F<sqlite> application (if both are installed, it will prefer F<sqlite3>. If
-found, it will be called by the object methods below to gather the data
-necessary for each. If it cannot be found, then C<new()> will attempt to load
-L<DBD::SQLite|DBD::SQLite> or L<DBD::SQLite2|DBD::SQLite2>. These DBI drivers
-have SQLite embedded in them but do not install the application. If these
-fail, then SQLite is assumed not to be installed, and each of the object
-methods will return C<undef>.
-
-App::Info::RDBMS::SQLite searches for F<sqlite3> and F<sqlite> along your
-path, as defined by C<< File::Spec->path >>.
+When it called, C<new()> searches the directories returned by
+F<search_bin_dirs> for an executable with a name returned by
+C<search_exe_names>. If found, it will be called by the object methods below
+to gather the data necessary for each. If it cannot be found, then C<new()>
+will attempt to load L<DBD::SQLite|DBD::SQLite> or
+L<DBD::SQLite2|DBD::SQLite2>. These DBI drivers have SQLite embedded in them
+but do not install the application. If these fail, then SQLite is assumed not
+to be installed, and each of the object methods will return C<undef>.
 
 B<Events:>
 
@@ -80,15 +77,15 @@ B<Events:>
 
 =item info
 
-Looking for sqlite3 or sqlite.
+Looking for SQLite.
 
 =item confirm
 
-Path to sqlite3 or sqlite?
+Path to SQLite executable?
 
 =item unknown
 
-Path to sqlite3 or sqlite?
+Path to SQLite executable?
 
 =back
 
@@ -99,16 +96,14 @@ sub new {
     my $self = shift->SUPER::new(@_);
 
     # Find pg_config.
-    $self->info("Looking for sqlite3 or sqlite");
+    $self->info("Looking for SQLite");
 
-    my @exes = qw(sqlite3 sqlite);
-    if (WIN32) { $_ .= ".exe" for @exes }
-
-    if (my $cfg = $u->first_cat_exe(\@exes, $u->path)) {
+    my @exes = $self->search_exe_names;
+    if (my $cfg = $u->first_cat_exe(\@exes, $self->search_bin_dirs)) {
         # We found it. Confirm.
         $self->{sqlite} = $self->confirm(
             key      => 'sqlite',
-            prompt   => "Path to sqlite3 or sqlite?",
+            prompt   => "Path to SQLite executable?",
             value    => $cfg,
             callback => sub { -x },
             error    => 'Not an executable'
@@ -130,7 +125,7 @@ sub new {
         # Handle an unknown value.
         $self->{sqlite} = $self->unknown(
             key      => 'sqlite',
-            prompt   => "Path to sqlite3 or sqlite?",
+            prompt   => "Path to SQLite executable?",
             callback => sub { -x },
             error    => 'Not an executable'
         );
@@ -470,8 +465,7 @@ sub patch_version {
   my $bin_dir = $sqlite->bin_dir;
 
 Returns the SQLite binary directory path. App::Info::RDBMS::SQLite simply
-retreives it as the directory part of the path to the F<sqlite3> or F<sqlite>
-executable.
+retreives it as the directory part of the path to the SQLite executable.
 
 =cut
 
@@ -479,7 +473,11 @@ sub bin_dir {
     my $self = shift;
     return unless $self->{sqlite};
     unless (exists $self->{bin_dir} ) {
-        $self->{bin_dir} = $u->catdir(($u->splitpath($self->{sqlite}))[0,1]);
+        my @parts = $u->splitpath($self->{sqlite});
+        $self->{bin_dir} = $u->catdir(
+            ($parts[0] eq '' ? () : $parts[0]),
+            $u->splitdir($parts[1])
+        );
     }
     return $self->{bin_dir};
 }
@@ -490,12 +488,217 @@ sub bin_dir {
 
   my $lib_dir = $expat->lib_dir;
 
+Returns the directory path in which an SQLite library was found. The directory
+path will be one of the values returned by C<search_lib_dirs()>, where a file
+with a name as returned by C<search_lib_names()> was found. No search is
+performed if SQLite is not installed or if only DBD::SQLite is installed.
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Searching for shared object library directory
+
+=item error
+
+Cannot find shared object library direcory
+
+=item unknown
+
+Enter a valid Expat shared object library directory
+
+=back
+
+=cut
+
+my $lib_dir = sub {
+    my ($self, $label) = (shift, shift);
+    return unless $self->{sqlite};
+    $self->info("Searching for $label directory");
+    my $dir;
+    unless ($dir = $u->first_cat_dir(\@_, $self->search_lib_dirs)) {
+        $self->error("Cannot find $label direcory");
+        $dir = $self->unknown(
+            key      => "$label directory",
+            callback => sub { $u->first_cat_dir(\@_, $_) },
+            error    => "No $label found in directory "
+        );
+    }
+    return $dir;
+
+};
+
+sub lib_dir {
+    my $self = shift;
+    return unless $self->{sqlite};
+    $self->{lib_dir} = $lib_dir->($self, 'library', $self->search_lib_names)
+      unless exists $self->{lib_dir};
+    return $self->{lib_dir};
+}
+
+##############################################################################
+
+=head3 so_lib_dir
+
+  my $so_lib_dir = $expat->so_lib_dir;
+
 Returns the directory path in which an SQLite shared object library was
-found. No search is performed if SQLite is not installed or if only
-DBD::SQLite is installed. It searches all of the paths in the C<libsdirs> and
-C<loclibpth> attributes defined by the Perl L<Config|Config> module -- plus
-F</sw/lib> (in support of all you Fink users out there) -- for one of the
-following files:
+found. The directory path will be one of the values returned by
+C<search_lib_dirs()>, where a file with a name as returned by
+C<search_so_lib_names()> was found. No search is performed if SQLite is not
+installed or if only DBD::SQLite is installed.
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Searching for shared object library directory
+
+=item error
+
+Cannot find shared object library direcory
+
+=item unknown
+
+Enter a valid Expat shared object library directory
+
+=back
+
+=cut
+
+sub so_lib_dir {
+    my $self = shift;
+    return unless $self->{sqlite};
+    $self->{so_lib_dir} = $lib_dir->($self, 'shared object library',
+                                     $self->search_so_lib_names)
+      unless exists $self->{so_lib_dir};
+    return $self->{so_lib_dir};
+}
+
+##############################################################################
+
+=head3 inc_dir
+
+  my $inc_dir = $sqlite->inc_dir;
+
+Returns the directory path in which an SQLite include file was found. The
+directory path will be one of the values returned by C<search_inc_dirs()>,
+where a file with a name as returned by C<search_inc_names()> was found. No
+search is performed if SQLite is not installed or if only DBD::SQLite is
+installed.
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Searching for include directory
+
+=item error
+
+Cannot find include directory
+
+=item unknown
+
+Enter a valid SQLite include directory
+
+=back
+
+=cut
+
+sub inc_dir {
+    my $self = shift;
+    return unless $self->{sqlite};
+    unless (exists $self->{inc_dir}) {
+        $self->info("Searching for include directory");
+        # Should there be more paths than this?
+        my @incs = $self->search_inc_names;
+
+        if (my $dir = $u->first_cat_dir(\@incs, $self->search_inc_dirs)) {
+            $self->{inc_dir} = $dir;
+        } else {
+            $self->error("Cannot find include directory");
+            $self->{inc_dir} = $self->unknown(
+                key      => 'include directory',
+                callback => sub { $u->first_cat_dir(\@incs, $_) },
+                error    => "File 'sqlite.h' not found in directory"
+            );
+        }
+    }
+    return $self->{inc_dir};
+}
+
+##############################################################################
+
+=head3 home_url
+
+  my $home_url = $pg->home_url;
+
+Returns the PostgreSQL home page URL.
+
+=cut
+
+sub home_url { "http://www.sqlite.org/" }
+
+##############################################################################
+
+=head3 download_url
+
+  my $download_url = $pg->download_url;
+
+Returns the PostgreSQL download URL.
+
+=cut
+
+sub download_url { "http://www.sqlite.org/download.html" }
+
+##############################################################################
+
+=head3 search_exe_names
+
+  my @search_exe_names = $sqlite->search_exe_names;
+
+Returns a list of possible names for the SQLite executable. The names are
+F<sqlite3> and F<sqlite> by default (F<sqlite3.exe> and F<sqlite.exe> on
+Win32).
+
+=cut
+
+sub search_exe_names {
+    my $self = shift;
+    my @exes = qw(sqlite3 sqlite);
+    if (WIN32) { $_ .= ".exe" for @exes }
+    return ($self->SUPER::search_exe_names, @exes);
+}
+
+##############################################################################
+
+=head3 search_bin_dirs
+
+  my @search_bin_dirs = $sqlite->search_bin_dirs;
+
+Returns a list of possible directories in which to search an executable. Used
+by the C<new()> constructor to find an executable to execute and collect
+application info. The found directory will also be returned by the C<bin_dir>
+method.
+
+=cut
+
+sub search_bin_dirs { (shift->SUPER::search_bin_dirs, $u->path) }
+
+##############################################################################
+
+=head3 search_lib_names
+
+  my @seach_lib_names = $self->search_lib_nams
+
+Returns a list of possible names for library files. Used by C<lib_dir()> to
+search for library files. By default, the list is:
 
 =over
 
@@ -533,67 +736,23 @@ following files:
 
 =back
 
-B<Events:>
-
-=over 4
-
-=item info
-
-Searching for shared object library directory
-
-=item error
-
-Cannot find shared object library direcory
-
-=item unknown
-
-Enter a valid Expat shared object library directory
-
-=back
-
 =cut
 
-my $lib_dir = sub {
-    my ($self, $label) = (shift, shift, shift);
-    return unless $self->{sqlite};
-    $self->info("Searching for $label directory");
-    my $exe = $u->splitpath($self->{sqlite});
-    my $libs = [ map { "lib$exe.$_"} @_,
-                 qw(so so.0 so.0.0.1 dylib 0.dylib .0.0.1.dylib)
-             ];
-    my $dir;
-    unless ($dir = $u->first_cat_dir($libs, $u->lib_dirs, '/sw/lib')) {
-        $self->error("Cannot find $label direcory");
-        $dir = $self->unknown(
-            key      => "$label directory",
-            callback => sub { $u->first_cat_dir($libs, $_) },
-            error    => "No $label found in directory "
-        );
-    }
-    return $dir;
-
-};
-
-sub lib_dir {
+sub search_lib_names {
     my $self = shift;
-    return unless $self->{sqlite};
-    $self->{lib_dir} = $lib_dir->($self, 'library', 'a', 'la')
-      unless exists $self->{lib_dir};
-    return $self->{lib_dir};
+    my $exe = $u->splitpath($self->{sqlite});
+    return $self->SUPER::search_lib_names,
+      map { "lib$exe.$_"} qw(a la so so.0 so.0.0.1 dylib 0.dylib 0.0.1.dylib);
 }
 
 ##############################################################################
 
-=head3 so_lib_dir
+=head3 search_so_lib_names
 
-  my $so_lib_dir = $expat->so_lib_dir;
+  my @seach_so_lib_names = $self->search_so_lib_nams
 
-Returns the directory path in which an SQLite shared object library was
-found. No search is performed if SQLite is not installed or if only
-DBD::SQLite is installed. It searches all of the paths in the C<libsdirs> and
-C<loclibpth> attributes defined by the Perl L<Config|Config> module -- plus
-F</sw/lib> (in support of all you Fink users out there) -- for one of the
-following files:
+Returns a list of possible names for shared object library files. Used by
+C<so_lib_dir()> to search for library files. By default, the list is:
 
 =over
 
@@ -623,46 +782,58 @@ following files:
 
 =back
 
-B<Events:>
-
-=over 4
-
-=item info
-
-Searching for shared object library directory
-
-=item error
-
-Cannot find shared object library direcory
-
-=item unknown
-
-Enter a valid Expat shared object library directory
-
-=back
-
 =cut
 
-sub so_lib_dir {
+sub search_so_lib_names {
     my $self = shift;
-    return unless $self->{sqlite};
-    $self->{so_lib_dir} = $lib_dir->($self, 'shared object library')
-      unless exists $self->{so_lib_dir};
-    return $self->{so_lib_dir};
+    my $exe = $u->splitpath($self->{sqlite});
+    return $self->SUPER::search_so_lib_names,
+      map { "lib$exe.$_"}
+        qw(so so.0 so.0.0.1 dylib 0.dylib 0.0.1.dylib);
 }
 
 ##############################################################################
 
-=head3 inc_dir
+=head3 search_lib_dirs
 
-  my $inc_dir = $sqlite->inc_dir;
+  my @search_lib_dirs = $sqlite->search_lib_dirs;
 
-Returns the directory path in which the file F<sqlite3.h> or F<sqlite.h> was
-found. No search is performed if SQLite is not installed or if only
-DBD::SQLite is installed.
+Returns a list of possible directories in which to search for libraries. By
+default, it returns all of the paths in the C<libsdirs> and C<loclibpth>
+attributes defined by the Perl L<Config|Config> module -- plus F</sw/lib> (in
+support of all you Fink users out there).
 
-App::Info::RDBMS::SQLite searches for F<sqlite.h> in the following
-directories:
+=cut
+
+sub search_lib_dirs { shift->SUPER::search_lib_dirs, $u->lib_dirs, '/sw/lib' }
+
+##############################################################################
+
+=head3 search_inc_names
+
+  my @search_inc_names = $sqlite->search_inc_names;
+
+Returns a list of include file names to search for. Used by C<inc_dir()> to
+search for an include file. By default, the names are F<sqlite3.h> and
+F<sqlite.h>.
+
+=cut
+
+sub search_inc_names {
+    my $self = shift;
+    my $exe = $u->splitpath($self->{sqlite});
+    return $self->SUPER::search_inc_names, "$exe.h";
+}
+
+##############################################################################
+
+=head3 search_inc_dirs
+
+  my @search_inc_dirs = $sqlite->search_inc_dirs;
+
+Returns a list of possible directories in which to search for include files.
+Used by C<inc_dir()> to search for an include file. By default, the
+directories are:
 
 =over 4
 
@@ -674,74 +845,14 @@ directories:
 
 =back
 
-B<Events:>
-
-=over 4
-
-=item info
-
-Searching for include directory
-
-=item error
-
-Cannot find include directory
-
-=item unknown
-
-Enter a valid SQLite include directory
-
-=back
-
 =cut
 
-sub inc_dir {
-    my $self = shift;
-    return unless $self->{sqlite};
-    unless (exists $self->{inc_dir}) {
-        $self->info("Searching for include directory");
-        # Should there be more paths than this?
-        my @paths = qw(/usr/local/include
-                       /usr/include
-                       /sw/include);
-        my $incs = ['sqlite3.h', 'sqlite.h'];
-
-        if (my $dir = $u->first_cat_dir($incs, @paths)) {
-            $self->{inc_dir} = $dir;
-        } else {
-            $self->error("Cannot find include directory");
-            $self->{inc_dir} = $self->unknown(
-                key      => 'include directory',
-                callback => sub { $u->first_cat_dir($incs, $_) },
-                error    => "File 'sqlite.h' not found in directory"
-            );
-        }
-    }
-    return $self->{inc_dir};
+sub search_inc_dirs {
+    shift->SUPER::search_inc_dirs,
+      qw(/usr/local/include
+         /usr/include
+         /sw/include);
 }
-
-##############################################################################
-
-=head3 home_url
-
-  my $home_url = $pg->home_url;
-
-Returns the PostgreSQL home page URL.
-
-=cut
-
-sub home_url { "http://www.sqlite.org/" }
-
-##############################################################################
-
-=head3 download_url
-
-  my $download_url = $pg->download_url;
-
-Returns the PostgreSQL download URL.
-
-=cut
-
-sub download_url { "http://www.sqlite.org/download.html" }
 
 1;
 __END__

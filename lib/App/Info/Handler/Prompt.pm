@@ -1,6 +1,6 @@
 package App::Info::Handler::Prompt;
 
-# $Id: Prompt.pm 861 2004-11-20 00:15:32Z theory $
+# $Id: Prompt.pm 879 2004-11-27 19:36:54Z theory $
 
 =head1 NAME
 
@@ -45,12 +45,12 @@ events.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.30';
+$VERSION = '0.40';
 @ISA = qw(App::Info::Handler);
 
 # Register ourselves.
 App::Info::Handler->register_handler
-  ('prompt' => sub { __PACKAGE__->new('prompt') } );
+  ('prompt' => sub { __PACKAGE__->new } );
 
 =head1 INTERFACE
 
