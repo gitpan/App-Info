@@ -1,0 +1,22 @@
+Changes
+MANIFEST			This list of files
+Makefile.PL
+README
+lib/App/Info.pm
+lib/App/Info/HTTPD.pm
+lib/App/Info/HTTPD/Apache.pm
+lib/App/Info/Lib.pm
+lib/App/Info/Lib/Expat.pm
+lib/App/Info/Lib/Iconv.pm
+lib/App/Info/RDBMS.pm
+lib/App/Info/RDBMS/PostgreSQL.pm
+lib/App/Info/Util.pm
+t/apache.t
+t/expat.t
+t/iconv.t
+t/myapache.t
+t/myexpat.t
+t/myiconv.t
+t/mypostgres.t
+t/postgres.t
+t/util.t
