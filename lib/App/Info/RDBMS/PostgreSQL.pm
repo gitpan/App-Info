@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm,v 1.25 2003/08/26 01:02:08 david Exp $
+# $Id: PostgreSQL.pm,v 1.27 2003/11/17 21:12:32 david Exp $
 
 =head1 NAME
 
@@ -254,8 +254,8 @@ my $get_version = sub {
         if (defined $x and defined $y and defined $z) {
             @{$self}{qw(version major minor patch)} =
               ($version, $x, $y, $z);
-        } elsif ($version =~ /(\d+)\.(\d+)beta\d+/) {
-            # Beta versions are treated as patch level "0"
+        } elsif ($version =~ /(\d+)\.(\d+)/) {
+            # New versions, such as "7.4", are treated as patch level "0"
             @{$self}{qw(version major minor patch)} =
               ($version, $1, $2, 0);
         } else {
@@ -733,7 +733,7 @@ L<http://www.postgresql.org/> is the PostgreSQL home page.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2003, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

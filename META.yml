@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name: App-Info
-version: 0.24
+version: 0.25
 license: perl
 distribution_type: module
 requires:
@@ -12,7 +12,7 @@ conflicts: {}
 provides:
   App::Info:
     file: lib/App/Info.pm
-    version: 0.24
+    version: 0.25
   App::Info::HTTPD:
     file: lib/App/Info/HTTPD.pm
     version: 0.22
@@ -52,4 +52,4 @@ provides:
   App::Info::Util:
     file: lib/App/Info/Util.pm
     version: 0.22
-generated_by: Module::Build version 0.19_05
+generated_by: Module::Build version 0.21
