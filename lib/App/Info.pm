@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm 882 2004-11-27 19:50:48Z theory $
+# $Id: Info.pm 897 2004-12-06 23:28:11Z theory $
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ use App::Info::Handler;
 use App::Info::Request;
 use vars qw($VERSION);
 
-$VERSION = '0.41';
+$VERSION = '0.42';
 
 ##############################################################################
 ##############################################################################
@@ -332,6 +332,18 @@ Returns the full path the application's bin directory, if it exists.
 =cut
 
 sub bin_dir { $croak->(shift, 'bin_dir') }
+
+##############################################################################
+
+=head3 executable
+
+  my $executable = $app->executable;
+
+Returns the full path the application's bin directory, if it exists.
+
+=cut
+
+sub executable { $croak->(shift, 'executable') }
 
 ##############################################################################
 

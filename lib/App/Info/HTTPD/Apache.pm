@@ -1,6 +1,6 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 883 2004-11-28 20:03:31Z theory $
+# $Id: Apache.pm 900 2004-12-07 00:42:45Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.41';
+$VERSION = '0.42';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -129,7 +129,7 @@ sub new {
 
     if (my $exe = $u->first_cat_exe(\@exes, @paths)) {
         # We found httpd. Confirm.
-        $self->{exe} =
+        $self->{executable} =
           $self->confirm( key      => 'executable',
                           prompt   => 'Path to your httpd executable?',
                           value    => $exe,
@@ -137,7 +137,7 @@ sub new {
                           error    => 'Not an executable');
     } else {
         # Handle an unknown value.
-        $self->{exe} =
+        $self->{executable} =
           $self->unknown( key      => 'executable',
                           prompt   => 'Path to your httpd executable?',
                           callback => sub { -x },
@@ -178,7 +178,7 @@ installed, then all of the other object methods will return empty values.
 
 =cut
 
-sub installed { return $_[0]->{exe} ? 1 : undef }
+sub installed { return $_[0]->{executable} ? 1 : undef }
 
 ##############################################################################
 
@@ -214,11 +214,11 @@ Enter a valid Apache name
 my $get_version = sub {
     my $self = shift;
     $self->{-v} = 1;
-    $self->info(qq{Executing `"$self->{exe}" -v`});
-    my $version = `"$self->{exe}" -v`;
+    $self->info(qq{Executing `"$self->{executable}" -v`});
+    my $version = `"$self->{executable}" -v`;
     unless ($version) {
         $self->error("Failed to find Apache version data with ",
-                     qq{`"$self->{exe}" -v`});
+                     qq{`"$self->{executable}" -v`});
         return;
     }
 
@@ -237,7 +237,7 @@ my $get_version = sub {
 
 sub name {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
 
     # Load data.
     $get_version->($self) unless exists $self->{-v};
@@ -282,7 +282,7 @@ Enter a valid Apache version number
 
 sub version {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
 
     # Load data.
     $get_version->($self) unless exists $self->{-v};
@@ -346,7 +346,7 @@ my $is_int = sub { /^\d+$/ };
 
 sub major_version {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     # Load data.
     $get_version->($self) unless exists $self->{-v};
     # Handle an unknown value.
@@ -391,7 +391,7 @@ Enter a valid Apache minor version number
 
 sub minor_version {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     # Load data.
     $get_version->($self) unless exists $self->{-v};
     # Handle an unknown value.
@@ -435,7 +435,7 @@ Enter a valid Apache patch version number
 
 sub patch_version {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     # Load data.
     $get_version->($self) unless exists $self->{-v};
     # Handle an unknown value.
@@ -482,12 +482,12 @@ Enter a valid HTTPD root
 my $get_compile_settings = sub {
     my $self = shift;
     $self->{-V} = 1;
-    $self->info(qq{Executing `"$self->{exe}" -V`});
+    $self->info(qq{Executing `"$self->{executable}" -V`});
     # Get the compile settings.
-    my $data = `"$self->{exe}" -V`;
+    my $data = `"$self->{executable}" -V`;
     unless ($data) {
         $self->error("Unable to extract compile settings from ",
-                     qq{`"$self->{exe}" -V`});
+                     qq{`"$self->{executable}" -V`});
         return;
     }
 
@@ -505,7 +505,7 @@ my $get_compile_settings = sub {
                     $self->{lc $k} = 0;
                 } elsif ($k eq 'HTTPD_ROOT') {
                     $self->{lc $k} =
-                      join('\\', (split /\\/, $self->{exe} )[0 .. 1]);
+                      join('\\', (split /\\/, $self->{executable} )[0 .. 1]);
                  }
             }
         } elsif (/-D/) {
@@ -515,7 +515,7 @@ my $get_compile_settings = sub {
     }
     # Issue a warning if no httpd root was found.
     $self->error("Cannot parse HTTPD root from ",
-                 qq{`"$self->{exe}" -V`}) unless $self->{httpd_root};
+                 qq{`"$self->{executable}" -V`}) unless $self->{httpd_root};
 };
 
 # This code reference is used by httpd_root(), lib_dir(), bin_dir(), and
@@ -524,7 +524,7 @@ my $is_dir = sub { -d };
 
 sub httpd_root {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     # Get the compile settings.
     $get_compile_settings->($self) unless $self->{-V};
     # Handle an unknown value.
@@ -568,7 +568,7 @@ Enter a valid magic number
 
 sub magic_number {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     # Get the compile settings.
     $get_compile_settings->($self) unless $self->{-V};
     # Handle an unknown value.
@@ -620,7 +620,7 @@ Enter a valid option
 
 sub compile_option {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     # Get the compile settings.
     $get_compile_settings->($self) unless $self->{-V};
     # Handle an unknown value.
@@ -667,7 +667,7 @@ Location of httpd.conf file?
 
 sub conf_file {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     unless (exists $self->{conf_file}) {
         $self->info("Searching for Apache configuration file");
         my $root = $self->httpd_root;
@@ -763,7 +763,7 @@ my $parse_conf_file = sub {
 
 sub user {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     $parse_conf_file->($self) unless exists $self->{user};
     # Handle an unknown value.
     $self->{user} = $self->unknown( key      => 'user',
@@ -815,7 +815,7 @@ Enter Apache user group name
 
 sub group {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     $parse_conf_file->($self) unless exists $self->{group};
     # Handle an unknown value.
     $self->{group} =
@@ -868,7 +868,7 @@ Enter Apache TCP/IP port number
 
 sub port {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     $parse_conf_file->($self) unless exists $self->{port};
     # Handle an unknown value.
     $self->{port} =
@@ -882,62 +882,45 @@ sub port {
 
 ##############################################################################
 
+=head3 executable
+
+  my $executable = $apache->executable;
+
+Returns the path to the Apache executable, which will be defined by one of the
+names returned by C<search_exe_names()>. The executable is searched for in
+C<new()>, so there are no events for this method.
+
+=cut
+
+sub executable { shift->{executable} }
+
+=head3 httpd
+
+  my $httpd = $apache->httpd;
+
+An alias for C<executable()>.
+
+##############################################################################
+
 =head3 bin_dir
 
   my $bin_dir = $apache->bin_dir;
 
-Returns the Apache binary directory path. App::Info::HTTPD::Apache simply
-looks for the F<bin> directory under the HTTPD root directory, as returned by
-C<httpd_root()>.
-
-B<Events:>
-
-=over 4
-
-=item info
-
-Executing `httpd -V`
-
-Searching for bin directory
-
-=item error
-
-Unable to extract compile settings from `httpd -V`
-
-Cannot parse HTTPD root from `httpd -V`
-
-Cannot find bin directory
-
-=item unknown
-
-Enter a valid HTTPD root
-
-Enter a valid Apache bin directory
-
-=back
+Returns the SQLite binary directory path. App::Info::HTTPD::Apache simply
+retreives it as the directory part of the path to the HTTPD executable.
 
 =cut
 
 sub bin_dir {
     my $self = shift;
-    return unless $self->{exe};
-    unless (exists $self->{bin_dir}) {{
-        my $root = $self->httpd_root || last; # Double braces allow this.
-        $self->info("Searching for bin directory");
-        if (WIN32) {
-            # Windows thinks that the bin directory is the same as the root.
-            $self->{bin_dir} = $root;
-        } else {
-            # Other platforms have a "bin" director under the root.
-            $self->{bin_dir} = $u->first_cat_path('bin', $root)
-              or $self->error("Cannot find bin directory");
-        }
-    }}
-
-    # Handle unknown value.
-    $self->{bin_dir} = $self->unknown( key      => 'bin directory',
-                                       callback => $is_dir)
-      unless $self->{bin_dir};
+    return unless $self->{executable};
+    unless (exists $self->{bin_dir} ) {
+        my @parts = $u->splitpath($self->{executable});
+        $self->{bin_dir} = $u->catdir(
+            ($parts[0] eq '' ? () : $parts[0]),
+            $u->splitdir($parts[1])
+        );
+    }
     return $self->{bin_dir};
 }
 
@@ -981,7 +964,7 @@ Enter a valid Apache include directory
 
 sub inc_dir {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     unless (exists $self->{inc_dir}) {{
         my $root = $self->httpd_root || last; # Double braces allow this.
         $self->info("Searching for include directory");
@@ -1035,7 +1018,7 @@ Enter a valid Apache library directory
 
 sub lib_dir {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     unless (exists $self->{lib_dir}) {
         if ($self->httpd_root) {
             $self->info("Searching for library directory");
@@ -1128,11 +1111,11 @@ Unable to extract needed data from `httpd -l`
 my $get_static_mods = sub {
     my $self = shift;
     $self->{static_mods} = undef;
-    $self->info(qq{Executing `"$self->{exe}" -l`});
-    my $data = `"$self->{exe}" -l`;
+    $self->info(qq{Executing `"$self->{executable}" -l`});
+    my $data = `"$self->{executable}" -l`;
     unless ($data) {
         $self->error("Unable to extract needed data from ".
-                     qq{`"$self->{exe}" =l`});
+                     qq{`"$self->{executable}" =l`});
         return;
     }
 
@@ -1148,7 +1131,7 @@ my $get_static_mods = sub {
 
 sub static_mods {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     $get_static_mods->($self) unless exists $self->{static_mods};
     return unless $self->{static_mods};
     return wantarray ? @{$self->{static_mods}} : $self->{static_mods};
@@ -1180,7 +1163,7 @@ Unable to extract needed data from `httpd -l`
 
 sub mod_so {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     $get_static_mods->($self) unless exists $self->{static_mods};
     return $self->{mod_so};
 }
@@ -1211,7 +1194,7 @@ Unable to extract needed data from `httpd -l`
 
 sub mod_perl {
     my $self = shift;
-    return unless $self->{exe};
+    return unless $self->{executable};
     $get_static_mods->($self) unless exists $self->{static_mods};
     return $self->{mod_perl};
 }
@@ -1443,6 +1426,94 @@ sub search_conf_dirs {
       qw(/usr/share/doc/apache-perl /etc/httpd)
     );
 }
+
+##############################################################################
+
+=head2 Other Executable Methods
+
+These methods return the complete paths to their like-named executables.
+Apache comes with a fair number of them; we provide these methods to provide a
+path to a subset of them. Each method, when called, checks for an executable
+in the directory returned by C<bin_dir()>.
+
+The available executable methods are:
+
+=over
+
+=item ab
+
+=item apachectl
+
+=item apxs
+
+=item htdigest
+
+=item htpasswd
+
+=item logresolve
+
+=item rotatelogs
+
+=back
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Looking for executable
+
+=item confirm
+
+Path to executable?
+
+=item unknown
+
+Path to executable?
+
+=back
+
+=cut
+
+my $find_exe = sub  {
+    my ($self, $key) = @_;
+    my $exe = $key . (WIN32 ? '.exe' : '');
+
+    # Find executable.
+    $self->info("Looking for $key");
+
+    unless ($self->{$key}) {
+	my $bin = $self->bin_dir or return;
+	if (my $exe = $u->first_exe($u->catfile($bin, $exe))) {
+	    # We found it. Confirm.
+	    $self->{$key} = $self->confirm(
+		key      => $key,
+		prompt   => "Path to $key executable?",
+		value    => $exe,
+		callback => sub { -x },
+		error    => 'Not an executable'
+	    );
+	} else {
+	    # Handle an unknown value.
+	    $self->{$key} = $self->unknown(
+		key      => $key,
+		prompt   => "Path to $key executable?",
+		callback => sub { -x },
+		error    => 'Not an executable'
+	    );
+	}
+    }
+
+    return $self->{$key};
+};
+
+for my $exe (qw(ab apachectl apxs htdigest htpasswd logresolve rotatelogs)) {
+    no strict 'refs';
+    *{$exe} = sub { shift->$find_exe($exe) };
+}
+
+*httpd = \&executable;
 
 1;
 __END__

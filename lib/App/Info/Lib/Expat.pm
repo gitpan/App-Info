@@ -1,6 +1,6 @@
 package App::Info::Lib::Expat;
 
-# $Id: Expat.pm 882 2004-11-27 19:50:48Z theory $
+# $Id: Expat.pm 897 2004-12-06 23:28:11Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::Lib;
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.41';
+$VERSION = '0.42';
 
 my $u = App::Info::Util->new;
 
@@ -418,6 +418,18 @@ Since Expat includes no binaries, this method always returns false.
 =cut
 
 sub bin_dir { return }
+
+##############################################################################
+
+=head3 executable
+
+  my $executable = $expat->executable;
+
+Since Expat includes no executable program, this method always returns false.
+
+=cut
+
+sub executable { return }
 
 ##############################################################################
 

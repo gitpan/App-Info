@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 
-# $Id: postgres.t 869 2004-11-23 22:48:34Z theory $
+# $Id: postgres.t 900 2004-12-07 00:42:45Z theory $
 
 use strict;
-use Test::More tests => 18;
+use Test::More tests => 21;
 use File::Spec::Functions;
 
 BEGIN { use_ok('App::Info::RDBMS::PostgreSQL') }
@@ -11,6 +11,10 @@ BEGIN { use_ok('App::Info::RDBMS::PostgreSQL') }
 my $ext = $^O eq 'MSWin32' ? '.bat' : '';
 my $bin_dir = catdir 't', 'scripts';
 $bin_dir = catdir 't', 'bin' unless -d $bin_dir;
+my %exes = (
+    map { $_ => catfile $bin_dir, "$_$ext" }
+      qw(postgres createdb)
+);
 
 ok( my $pg = App::Info::RDBMS::PostgreSQL->new(
     search_bin_dirs => $bin_dir,
@@ -28,7 +32,10 @@ is( $pg->major_version, '8', "Test major version" );
 is( $pg->minor_version, '0', "Test minor version" );
 is( $pg->patch_version, '0', "Test patch version" );
 is( $pg->lib_dir, 't/testlib', "Test lib dir" );
-is( $pg->bin_dir, 't/bin', "Test bin dir" );
+is( $pg->executable, $exes{postgres}, "Test executable" );
+is( $pg->postgres, $exes{postgres}, "Test postgres" );
+is( $pg->createdb, $exes{createdb}, "Test createdb" );
+is( $pg->bin_dir, $bin_dir, "Test bin dir" );
 is( $pg->so_lib_dir, 't/testlib', "Test so lib dir" );
 is( $pg->inc_dir, "t/testinc", "Test inc dir" );
 is( $pg->configure, '', "Test configure" );

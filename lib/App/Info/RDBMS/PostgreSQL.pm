@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm 882 2004-11-27 19:50:48Z theory $
+# $Id: PostgreSQL.pm 899 2004-12-07 00:12:05Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.41';
+$VERSION = '0.42';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -459,6 +459,83 @@ sub patch_version {
 
 ##############################################################################
 
+=head3 executable
+
+  my $exe = $pg->executable;
+
+Returns the full path to the PostgreSQL server executable, which is named
+F<postgres>.  This method does not use the executable names returned by
+C<search_exe_names()>; those executable names are used to search for
+F<pg_config> only (in C<new()>).
+
+When it called, C<executable()> checks for an executable named F<postgres> in
+the directory returned by C<bin_dir()>.
+
+Note that C<executable()> is simply an alias for C<postgres()>.
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Looking for postgres executable
+
+=item confirm
+
+Path to postgres executable?
+
+=item unknown
+
+Path to postgres executable?
+
+=back
+
+=cut
+
+my $find_exe = sub  {
+    my ($self, $key) = @_;
+    my $exe = $key . (WIN32 ? '.exe' : '');
+
+    # Find executable.
+    $self->info("Looking for $key");
+
+    unless ($self->{$key}) {
+	my $bin = $self->bin_dir or return;
+	if (my $exe = $u->first_exe($u->catfile($bin, $exe))) {
+	    # We found it. Confirm.
+	    $self->{$key} = $self->confirm(
+		key      => $key,
+		prompt   => "Path to $key executable?",
+		value    => $exe,
+		callback => sub { -x },
+		error    => 'Not an executable'
+	    );
+	} else {
+	    # Handle an unknown value.
+	    $self->{$key} = $self->unknown(
+		key      => $key,
+		prompt   => "Path to $key executable?",
+		callback => sub { -x },
+		error    => 'Not an executable'
+	    );
+	}
+    }
+
+    return $self->{$key};
+};
+
+for my $exe (qw(postgres createdb createlang createuser dropdb droplang
+                dropuser initdb pg_dump pg_dumpall pg_restore postmaster
+		vacuumdb psql)) {
+    no strict 'refs';
+    *{$exe} = sub { shift->$find_exe($exe) };
+}
+
+*executable = \&postgres;
+
+##############################################################################
+
 =head3 bin_dir
 
   my $bin_dir = $pg->bin_dir;
@@ -727,6 +804,9 @@ sub download_url { "http://www.postgresql.org/mirrors-ftp.html" }
 Returns a list of possible names for F<pg_config> executable. By default, only
 F<pg_config> is returned (or F<pg_config.exe> on Win32).
 
+Note that this method is not used to search for the PostgreSQL server
+executable, only F<pg_config>.
+
 =cut
 
 sub search_exe_names {
@@ -800,6 +880,69 @@ sub search_bin_dirs {
          /bin),
       'C:\Program Files\PostgreSQL\bin';
 }
+
+##############################################################################
+
+=head2 Other Executable Methods
+
+These methods function just like the C<executable()> method, except that they
+return different executables. PostgreSQL comes with a fair number of them; we
+provide these methods to provide a path to a subset of them. Each method, when
+called, checks for an executable in the directory returned by C<bin_dir()>.
+
+The available executable methods are:
+
+=over
+
+=item postgres
+
+=item createdb
+
+=item createlang
+
+=item createuser
+
+=item dropdb
+
+=item droplang
+
+=item dropuser
+
+=item initdb
+
+=item pg_dump
+
+=item pg_dumpall
+
+=item pg_restore
+
+=item postmaster
+
+=item psql
+
+=item vacuumdb
+
+=back
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Looking for executable
+
+=item confirm
+
+Path to executable?
+
+=item unknown
+
+Path to executable?
+
+=back
+
+=cut
 
 1;
 __END__

@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 
-# $Id: sqlite.t 867 2004-11-23 21:45:37Z theory $
+# $Id: sqlite.t 897 2004-12-06 23:28:11Z theory $
 
 use strict;
-use Test::More tests => 17;
+use Test::More tests => 18;
 use File::Spec::Functions;
 
 BEGIN { use_ok('App::Info::RDBMS::SQLite') }
@@ -13,10 +13,11 @@ my $bin_dir = catdir 't', 'scripts';
 $bin_dir = catdir 't', 'bin' unless -d $bin_dir;
 my $lib_dir = catdir 't', 'testlib';
 my $inc_dir = catdir 't', 'testinc';
+my $executable = catfile $bin_dir, "sqlite3$ext";
 
 ok( my $sqlite = App::Info::RDBMS::SQLite->new(
     search_bin_dirs  => [$bin_dir],
-    search_exe_names => ["sqlite3$ext"],
+    search_exe_names => [$executable],
     search_lib_dirs  => [$lib_dir],
     search_inc_dirs  => [$inc_dir],
 ), "Got Object");
@@ -32,6 +33,7 @@ is( $sqlite->major_version, '3', "Test major version" );
 is( $sqlite->minor_version, '0', "Test minor version" );
 is( $sqlite->patch_version, '7', "Test patch version" );
 is( $sqlite->lib_dir, $lib_dir, "Test lib dir" );
+is( $sqlite->executable, $executable, "Test executable" );
 is( $sqlite->bin_dir, $bin_dir, "Test bin dir" );
 is( $sqlite->so_lib_dir, $lib_dir, "Test so lib dir" );
 is( $sqlite->inc_dir, $inc_dir, "Test inc dir" );
