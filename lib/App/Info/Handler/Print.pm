@@ -1,6 +1,6 @@
 package App::Info::Handler::Print;
 
-# $Id: Print.pm 1055 2005-01-04 00:29:49Z theory $
+# $Id: Print.pm 1268 2005-02-14 18:04:50Z theory $
 
 =head1 NAME
 
@@ -54,7 +54,7 @@ print event messages to different filehandle.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.44';
+$VERSION = '0.45';
 @ISA = qw(App::Info::Handler);
 
 # Register ourselves.
@@ -124,6 +124,14 @@ sub new {
     # We're done!
     return $self;
 }
+
+##############################################################################
+
+=head3 handler
+
+This method is called by App::Info to print out the message from events.
+
+=cut
 
 sub handler {
     my ($self, $req) = @_;

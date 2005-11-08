@@ -1,6 +1,6 @@
 package App::Info;
 
-# $Id: Info.pm 1075 2005-01-08 00:29:13Z theory $
+# $Id: Info.pm 1925 2005-08-05 00:40:27Z theory $
 
 =head1 NAME
 
@@ -56,7 +56,7 @@ use App::Info::Handler;
 use App::Info::Request;
 use vars qw($VERSION);
 
-$VERSION = '0.44';
+$VERSION = '0.45';
 
 ##############################################################################
 ##############################################################################
@@ -876,7 +876,7 @@ of the above arguments:
 
 sub unknown {
     my ($self, %params) = @_;
-    my $key = delete $params{key}
+    my $key = $params{key}
       or Carp::croak("No key parameter passed to unknown()");
     # Just return the value if we've already handled this value. Ideally this
     # shouldn't happen.
@@ -971,7 +971,7 @@ Here's an example usage demonstrating all of the above arguments:
 
 sub confirm {
     my ($self, %params) = @_;
-    my $key = delete $params{key}
+    my $key = $params{key}
       or Carp::croak("No key parameter passed to confirm()");
     return $self->{__confirm__}{$key} if exists $self->{__confirm__}{$key};
 

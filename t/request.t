@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 
-# $Id: request.t 682 2004-09-28 05:59:10Z theory $
+# $Id: request.t 1925 2005-08-05 00:40:27Z theory $
 
 use strict;
-use Test::More tests => 17;
+use Test::More tests => 18;
 use File::Spec::Functions qw(tmpdir);
 
 BEGIN { use_ok('App::Info::Request') }
@@ -20,13 +20,16 @@ like( $@, qr/^Callback parameter 'foo' is not a code reference/,
 
 
 # Now create a request we can actually use for testing stuff.
-my %args = ( message  => 'Enter a value',
-             callback => sub { ref $_[0] eq 'HASH' && $_[0]->{val} == 1 },
-             error   => 'Invalid value',
-             type     => 'info'
-           );
+my %args = (
+    message  => 'Enter a value',
+    callback => sub { ref $_[0] eq 'HASH' && $_[0]->{val} == 1 },
+    error    => 'Invalid value',
+    type     => 'info',
+    key      => 'value',
+);
 
 ok( $req = App::Info::Request->new( %args ), "New custom request" );
+is( $req->key, $args{key}, "Check key" );
 is( $req->message, $args{message}, "Check message" );
 is( $req->error, $args{error}, "Check error" );
 is( $req->type, $args{type}, "Check type" );

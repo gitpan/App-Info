@@ -1,6 +1,6 @@
 package App::Info::Request;
 
-# $Id: Request.pm 928 2004-12-14 20:02:44Z theory $
+# $Id: Request.pm 1925 2005-08-05 00:40:27Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ to handle the request appropriately.
 
 use strict;
 use vars qw($VERSION);
-$VERSION = '0.44';
+$VERSION = '0.45';
 
 ##############################################################################
 
@@ -119,6 +119,21 @@ sub new {
 ##############################################################################
 
 =head2 Object Methods
+
+=head3 key
+
+  my $key = $req->key;
+
+Returns the key stored in the App::Info::Request object. The key is used by
+the App::Info subclass to uniquely identify the information it is harvesting,
+such as the path to an executable. It might be used by request handlers,
+for example, to see if an option was passed on the command-line.
+
+=cut
+
+sub key { $_[0]->{key} }
+
+##############################################################################
 
 =head3 message
 
