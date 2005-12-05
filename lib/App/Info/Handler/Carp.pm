@@ -1,6 +1,6 @@
 package App::Info::Handler::Carp;
 
-# $Id: Carp.pm 2193 2005-11-08 06:05:50Z theory $
+# $Id: Carp.pm 2272 2005-12-05 22:44:19Z theory $
 
 =head1 NAME
 
@@ -66,7 +66,7 @@ Passes the event message to C<Carp::confess()>.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.46';
+$VERSION = '0.47';
 @ISA = qw(App::Info::Handler);
 
 my %levels = ( croak   => sub { goto &Carp::croak },
