@@ -1,6 +1,6 @@
 package App::Info::Util;
 
-# $Id: Util.pm 1077 2005-01-08 00:33:12Z theory $
+# $Id: Util.pm 2270 2005-12-05 22:42:07Z theory $
 
 =head1 NAME
 
@@ -49,7 +49,7 @@ use File::Spec ();
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(File::Spec);
-$VERSION = '0.45';
+$VERSION = '0.46';
 
 my %path_dems = (MacOS   => qr',',
                  MSWin32 => qr';',
@@ -249,8 +249,8 @@ sub first_cat_dir {
 
 =head2 first_cat_exe
 
-  my $exe = $util->first_cat_exe('ick.txt', @paths);
-  $exe = $util->first_cat_exe(['this.txt', 'that.txt'], @paths);
+  my $exe = $util->first_cat_exe('ick.exe', @paths);
+  $exe = $util->first_cat_exe(['this.exe', 'that.exe'], @paths);
 
 Funtionally identical to C<first_cat_path()>, except that it returns the full
 path to the first executable file found, rather than simply the first file

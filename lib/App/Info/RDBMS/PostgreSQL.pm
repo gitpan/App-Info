@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm 1953 2005-08-10 17:25:00Z theory $
+# $Id: PostgreSQL.pm 2270 2005-12-05 22:42:07Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.45';
+$VERSION = '0.46';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -367,7 +367,7 @@ sub version {
 
 Returns the PostgreSQL major version number. App::Info::RDBMS::PostgreSQL
 parses the major version number from the system call C<`pg_config --version`>.
-For example, C<version()> returns "7.1.2", then this method returns "7".
+For example, if C<version()> returns "7.1.2", then this method returns "7".
 
 B<Events:>
 
