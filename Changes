@@ -1,5 +1,18 @@
 Revision history for Perl extension App::Info.
 
+0.48  2006-02-05T03:09:38
+      - Added support for Apache2 to App::Info::HTTPD::Apache.
+      - Added files_in_dir() method to App::Info::Util to get a list of all of
+        the files in a directory.
+      - Added shared_mods() method to App::Info::HTTPD::Apache for getting a
+        list of shared object libraries compiled for Apache.
+      - The mod_perl() method of App::Info::HTTPD::Apache now also checks the
+        shared object libraries to determine whether mod_perl is supported by
+        the installed Apache.
+      - Corrected some documentation pastos in App::Info::Lib::OSSPUUID.
+      - Added perl_module() method to App::Info::Lib::OSSPUUID, since the OSSP
+        library might be installed, but not OSSP::uuid.
+
 0.47  2005-12-05T22:56:12
       - Fixed "use lib" line in Makefile.PL caused by a bug in Module::Build.
 
@@ -40,7 +53,7 @@ Revision history for Perl extension App::Info.
         including "ab()", "apachectl()", "apxs()", and others.
       - Changed behavior of App::Info::HTTPD::Apache->bin_dir to just return
         the name of the directory in which the httpd executable is stored,
-	rather than a possible "bin" directory under the httpd_root.
+        rather than a possible "bin" directory under the httpd_root.
 
 0.41  2004-11-28T20:01:57
       - Fixed Apache, SQLite, and Iconv tests to pass under Win32.

@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm 2272 2005-12-05 22:44:19Z theory $
+# $Id: PostgreSQL.pm 2275 2005-12-05 22:57:10Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.47';
+$VERSION = '0.48';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
