@@ -1,6 +1,6 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 2574 2006-02-04 04:02:03Z theory $
+# $Id: Apache.pm 2798 2006-04-08 05:33:56Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.48';
+$VERSION = '0.49';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -95,19 +95,19 @@ As well as these parameters to specify alternate names for Apache executables
 
 =over
 
-=item seearch_ab_names
+=item search_ab_names
 
-=item seearch_apachectl_names
+=item search_apachectl_names
 
-=item seearch_apxs_names
+=item search_apxs_names
 
-=item seearch_htdigest_names
+=item search_htdigest_names
 
-=item seearch_htpasswd_names
+=item search_htpasswd_names
 
-=item seearch_logresolve_names
+=item search_logresolve_names
 
-=item seearch_rotatelogs_names
+=item search_rotatelogs_names
 
 =back
 
@@ -1317,17 +1317,30 @@ sub download_url { "http://www.apache.org/dist/httpd/" }
 
   my @search_exe_names = $apache->search_exe_names;
 
-Returns a list of possible names for the Apache executable. The names are
-F<httpd>, F<apache-perl>, and F<apache> by default; F<.exe> is appended to
-each on Win32.
+Returns a list of possible names for the Apache executabl; F<.exe> is appended
+to each on Win32. By default, the names are:
+
+=over
+
+=item httpd
+
+=item httpd2
+
+=item apache-perl
+
+=item apache
+
+=item apache2
+
+=back
 
 =cut
 
 sub search_exe_names {
     my $self = shift;
-    my @exes = qw(httpd apache-perl apache apache2);
+    my @exes = qw(httpd httpd2 apache-perl apache apache2);
     if (WIN32) { $_ .= ".exe" for @exes }
-    return ($self->SUPER::search_exe_names, @exes);
+    return ( $self->SUPER::search_exe_names, @exes );
 }
 
 ##############################################################################
@@ -1341,8 +1354,10 @@ by the C<new()> constructor to find an executable to execute and collect
 application info. The found directory will also be returned by the C<bin_dir>
 method.
 
-The list of directories by default consists of the path as defined by
-C<< File::Spec->path >>, as well as the following directories:
+The list of directories by default consists of the path as defined by C<<
+File::Spec->path >> and the value returned by
+C<< Apache2::BuildConfig->new->{APXS_BINDIR} >> (if Apache2::BuildConfig is
+installed), as well as the following directories:
 
 =over 4
 
@@ -1387,9 +1402,13 @@ C<< File::Spec->path >>, as well as the following directories:
 =cut
 
 sub search_bin_dirs {
+    # See if mod_perl2 knows where Apache is installed.
+    eval { require Apache2::BuildConfig };
+    my @path = $@ ? () : Apache2::BuildConfig->new->{APXS_BINDIR};
     return (
         shift->SUPER::search_bin_dirs,
         $u->path,
+        @path,
         qw(
            /usr/local/apache/bin
            /usr/local/apache2/bin
@@ -1568,19 +1587,19 @@ And the corresponding search names methods are:
 
 =over
 
-=item seearch_ab_names
+=item search_ab_names
 
-=item seearch_apachectl_names
+=item search_apachectl_names
 
-=item seearch_apxs_names
+=item search_apxs_names
 
-=item seearch_htdigest_names
+=item search_htdigest_names
 
-=item seearch_htpasswd_names
+=item search_htpasswd_names
 
-=item seearch_logresolve_names
+=item search_logresolve_names
 
-=item seearch_rotatelogs_names
+=item search_rotatelogs_names
 
 =back
 
@@ -1617,7 +1636,7 @@ my $find_exe = sub  {
         if (my $exe = $u->first_cat_exe([$self->$meth(), $exe], $bin)) {
             # We found it. Confirm.
             $self->{$key} = $self->confirm(
-                key      => "apache $key",
+                key      => "path to $key",
                 prompt   => "Path to $key executable?",
                 value    => $exe,
                 callback => sub { -x },
@@ -1626,7 +1645,7 @@ my $find_exe = sub  {
         } else {
             # Handle an unknown value.
             $self->{$key} = $self->unknown(
-                key      => "apache $key",
+                key      => "path to $key",
                 prompt   => "Path to $key executable?",
                 callback => sub { -x },
                 error    => 'Not an executable'
