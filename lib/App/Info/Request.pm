@@ -1,6 +1,6 @@
 package App::Info::Request;
 
-# $Id: Request.pm 2577 2006-02-05 03:11:10Z theory $
+# $Id: Request.pm 2800 2006-04-08 05:36:07Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ to handle the request appropriately.
 
 use strict;
 use vars qw($VERSION);
-$VERSION = '0.49';
+$VERSION = '0.50';
 
 ##############################################################################
 

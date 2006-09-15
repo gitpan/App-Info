@@ -1,6 +1,6 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 2798 2006-04-08 05:33:56Z theory $
+# $Id: Apache.pm 2811 2006-04-16 21:56:37Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.49';
+$VERSION = '0.50';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -916,15 +916,15 @@ Returns the path to the Apache executable, which will be defined by one of the
 names returned by C<search_exe_names()>. The executable is searched for in
 C<new()>, so there are no events for this method.
 
-=cut
-
-sub executable { shift->{executable} }
-
 =head3 httpd
 
   my $httpd = $apache->httpd;
 
 An alias for C<executable()>.
+
+=cut
+
+sub executable { shift->{executable} }
 
 ##############################################################################
 
