@@ -1,6 +1,6 @@
 package App::Info::Lib::OSSPUUID;
 
-# $Id: OSSPUUID.pm 2800 2006-04-08 05:36:07Z theory $
+# $Id: OSSPUUID.pm 3153 2006-09-16 00:00:15Z theory $
 
 =head1 NAME
 
@@ -46,7 +46,7 @@ use File::Spec::Functions 'catfile';
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.50';
+$VERSION = '0.51';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;

@@ -1,6 +1,6 @@
 package App::Info::Request;
 
-# $Id: Request.pm 2800 2006-04-08 05:36:07Z theory $
+# $Id: Request.pm 3176 2006-09-25 16:00:28Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,8 @@ to handle the request appropriately.
 
 use strict;
 use vars qw($VERSION);
-$VERSION = '0.50';
+use Carp;
+$VERSION = '0.51';
 
 ##############################################################################
 
@@ -294,7 +295,7 @@ exemplars for using App::Info::Request objects when handling events.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2006, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

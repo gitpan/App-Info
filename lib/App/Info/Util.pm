@@ -1,6 +1,6 @@
 package App::Info::Util;
 
-# $Id: Util.pm 2800 2006-04-08 05:36:07Z theory $
+# $Id: Util.pm 3176 2006-09-25 16:00:28Z theory $
 
 =head1 NAME
 
@@ -49,7 +49,7 @@ use File::Spec ();
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(File::Spec);
-$VERSION = '0.50';
+$VERSION = '0.51';
 
 my %path_dems = (MacOS   => qr',',
                  MSWin32 => qr';',
@@ -335,7 +335,7 @@ C<multi_search_file()>, instead.
 sub search_file {
     my ($self, $file, $regex) = @_;
     return unless $file && $regex;
-    open F, "<$file" or Carp::croak "Cannot open $file: $!\n";
+    open F, "<$file" or require Carp && Carp::croak("Cannot open $file: $!\n");
     my @ret;
     while (<F>) {
         # If we find a match, we're done.
@@ -369,7 +369,7 @@ sub files_in_dir {
     my ($self, $dir, $code) = @_;
     return unless $dir;
     local *DIR;
-    opendir DIR, $dir or Carp::croak "Cannot open $dir: $!\n";
+    opendir DIR, $dir or require Carp && Carp::croak("Cannot open $dir: $!\n");
     my @files = $code
         ? grep { $code->() } readdir DIR
         : readdir DIR;
@@ -450,7 +450,7 @@ sub multi_search_file {
     my ($self, $file, @regexen) = @_;
     return unless $file && @regexen;
     my @each = @regexen;
-    open F, "<$file" or Carp::croak "Cannot open $file: $!\n";
+    open F, "<$file" or require Carp && Carp::croak("Cannot open $file: $!\n");
     my %ret;
     while (my $line = <F>) {
         my @splice;
@@ -518,7 +518,7 @@ L<App::Info::RDBMS::PostgreSQL|App::Info::RDBMS::PostgreSQL>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2004, David Wheeler. All Rights Reserved.
+Copyright (c) 2002-2006, David Wheeler. All Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.
