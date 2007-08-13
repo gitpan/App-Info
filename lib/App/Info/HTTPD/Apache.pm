@@ -1,6 +1,6 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 3154 2006-09-16 00:01:20Z theory $
+# $Id: Apache.pm 3180 2006-09-25 17:56:07Z theory $
 
 =head1 NAME
 
@@ -44,7 +44,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.51';
+$VERSION = '0.52';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;

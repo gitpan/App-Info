@@ -1,5 +1,11 @@
 Revision history for Perl extension App::Info.
 
+0.52  2007-08-13T18:24:54
+      - Fixed test failures on Win32 in 't/util.t.' Reported by Alex Chorny
+        via the cpan-testers mail list.
+      - Fixed test failure in 't/util.t' for those who happen to have an
+        INTERCAL compiler installed. Reported by David Cantrell.
+
 0.51  2006-09-25T17:52:53
       - Really fixed the unsorted test failure by putting the sort in the
         right place.

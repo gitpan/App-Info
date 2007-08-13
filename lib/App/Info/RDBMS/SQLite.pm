@@ -1,6 +1,6 @@
 package App::Info::RDBMS::SQLite;
 
-# $Id: SQLite.pm 3153 2006-09-16 00:00:15Z theory $
+# $Id: SQLite.pm 3180 2006-09-25 17:56:07Z theory $
 
 =head1 NAME
 
@@ -46,7 +46,7 @@ use App::Info::Util;
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.51';
+$VERSION = '0.52';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
