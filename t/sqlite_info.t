@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: sqlite_info.t 1068 2005-01-07 17:55:04Z theory $
+# $Id: sqlite_info.t 1068 2005-01-07 17:55:04Z david $
 
 use strict;
 use Test::More tests => 17;

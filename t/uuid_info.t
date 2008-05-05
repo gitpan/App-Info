@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: uuid_info.t 2572 2006-02-04 03:25:19Z theory $
+# $Id: uuid_info.t 2572 2006-02-04 03:25:19Z david $
 
 use strict;
 use Test::More tests => 22;

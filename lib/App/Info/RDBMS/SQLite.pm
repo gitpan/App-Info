@@ -1,6 +1,6 @@
 package App::Info::RDBMS::SQLite;
 
-# $Id: SQLite.pm 3180 2006-09-25 17:56:07Z theory $
+# $Id: SQLite.pm 3775 2008-05-05 17:42:55Z david $
 
 =head1 NAME
 
@@ -46,7 +46,7 @@ use App::Info::Util;
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.52';
+$VERSION = '0.53';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -896,7 +896,7 @@ L<http://www.sqlite.org/> is the SQLite home page.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2004, David Wheeler. All Rights Reserved.
+Copyright (c) 2004-2008, David Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: confirm.t 682 2004-09-28 05:59:10Z theory $
+# $Id: confirm.t 682 2004-09-28 05:59:10Z david $
 
 use strict;
 use File::Spec::Functions qw(tmpdir);

@@ -1,6 +1,6 @@
 #!perl -w
 
-# $Id: zpod.t 826 2004-11-08 17:35:06Z theory $
+# $Id: zpod.t 826 2004-11-08 17:35:06Z david $
 
 use strict;
 use Test::More;

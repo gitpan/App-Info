@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: prompt.t 865 2004-11-23 04:06:24Z theory $
+# $Id: prompt.t 865 2004-11-23 04:06:24Z david $
 
 use strict;
 use Test::More tests => 34;

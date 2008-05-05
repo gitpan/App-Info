@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: expat_info.t 682 2004-09-28 05:59:10Z theory $
+# $Id: expat_info.t 682 2004-09-28 05:59:10Z david $
 
 use strict;
 use Test::More tests => 22;

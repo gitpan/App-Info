@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: carp.t 862 2004-11-20 19:11:40Z theory $
+# $Id: carp.t 862 2004-11-20 19:11:40Z david $
 
 use strict;
 use Test::More tests => 23;
