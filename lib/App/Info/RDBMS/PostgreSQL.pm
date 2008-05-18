@@ -1,6 +1,6 @@
 package App::Info::RDBMS::PostgreSQL;
 
-# $Id: PostgreSQL.pm 3775 2008-05-05 17:42:55Z david $
+# $Id: PostgreSQL.pm 3926 2008-05-18 03:56:32Z david $
 
 =head1 NAME
 
@@ -28,7 +28,7 @@ methods defined by App::Info::RDBMS. Methods that trigger events will trigger
 them only the first time they're called (See L<App::Info|App::Info> for
 documentation on handling events). To start over (after, say, someone has
 installed PostgreSQL) construct a new App::Info::RDBMS::PostgreSQL object to
-aggregate new metadata.
+aggregate new meta data.
 
 Some of the methods trigger the same events. This is due to cross-calling of
 shared subroutines. However, any one event should be triggered no more than
@@ -44,7 +44,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.53';
+$VERSION = '0.54';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;

@@ -1,12 +1,12 @@
 package App::Info::RDBMS;
 
-# $Id: RDBMS.pm 3775 2008-05-05 17:42:55Z david $
+# $Id: RDBMS.pm 3778 2008-05-05 17:45:20Z david $
 
 use strict;
 use App::Info;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info);
-$VERSION = '0.53';
+$VERSION = '0.54';
 
 1;
 __END__

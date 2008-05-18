@@ -1,6 +1,6 @@
 package App::Info::Lib::Iconv;
 
-# $Id: Iconv.pm 3775 2008-05-05 17:42:55Z david $
+# $Id: Iconv.pm 3926 2008-05-18 03:56:32Z david $
 
 =head1 NAME
 
@@ -27,7 +27,7 @@ installed on the local system. It implements all of the methods defined by
 App::Info::Lib. Methods that trigger events will trigger them only the first
 time they're called (See L<App::Info|App::Info> for documentation on handling
 events). To start over (after, say, someone has installed libiconv) construct
-a new App::Info::Lib::Iconv object to aggregate new metadata.
+a new App::Info::Lib::Iconv object to aggregate new meta data.
 
 Some of the methods trigger the same events. This is due to cross-calling of
 shared subroutines. However, any one event should be triggered no more than
@@ -44,7 +44,7 @@ use App::Info::Util;
 use App::Info::Lib;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.53';
+$VERSION = '0.54';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;

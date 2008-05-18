@@ -1,10 +1,10 @@
 package App::Info::Lib::OSSPUUID;
 
-# $Id: OSSPUUID.pm 3775 2008-05-05 17:42:55Z david $
+# $Id: OSSPUUID.pm 3926 2008-05-18 03:56:32Z david $
 
 =head1 NAME
 
-App::Info::Lib::OSSPUUID - Information about the OOSP UUID library
+App::Info::Lib::OSSPUUID - Information about the OSSP UUID library
 
 =head1 SYNOPSIS
 
@@ -28,7 +28,7 @@ App::Info::Lib. Methods that trigger events will trigger them only the first
 time they're called (See L<App::Info|App::Info> for documentation on handling
 events). To start over (after, say, someone has installed the OSSP UUID
 library) construct a new App::Info::Lib::OSSPUUID object to aggregate new
-metadata.
+meta data.
 
 Some of the methods trigger the same events. This is due to cross-calling of
 shared subroutines. However, any one event should be triggered no more than
@@ -46,7 +46,7 @@ use File::Spec::Functions 'catfile';
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::Lib);
-$VERSION = '0.53';
+$VERSION = '0.54';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -436,7 +436,7 @@ sub minor_version {
 
   my $patch_version = $uuid->patch_version;
 
-Returns the OSSP UUID libary patch version number. App::Info::Lib::OSSPUUID
+Returns the OSSP UUID library patch version number. App::Info::Lib::OSSPUUID
 parses the patch version number from the system call C<`uuid-config
 --version`>. For example, if C<version()> returns "1.3.0", then this method
 returns "0".
@@ -829,7 +829,7 @@ sub ldflags {
   my $bool = $uuid->perl_module;
 
 Return true if C<OSSP::uuid> is installed and can be loaded, and false if not.
-C<OSSP::uuid> must be able to be loaed by the currently running instance of
+C<OSSP::uuid> must be able to be loaded by the currently running instance of
 the Perl interpreter.
 
 B<Events:>

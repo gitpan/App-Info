@@ -1,6 +1,6 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 3775 2008-05-05 17:42:55Z david $
+# $Id: Apache.pm 3926 2008-05-18 03:56:32Z david $
 
 =head1 NAME
 
@@ -27,7 +27,7 @@ installed on the local system. It implements all of the methods defined by
 App::Info::HTTPD. Methods that trigger events will trigger them only the first
 time they're called (See L<App::Info|App::Info> for documentation on handling
 events). To start over (after, say, someone has installed Apache) construct a
-new App::Info::HTTPD::Apache object to aggregate new metadata.
+new App::Info::HTTPD::Apache object to aggregate new meta data.
 
 Some of the methods trigger the same events. This is due to cross-calling of
 methods or of functions common to methods. However, any one event should be
@@ -44,7 +44,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.53';
+$VERSION = '0.54';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -63,7 +63,7 @@ complete description of argument parameters.
 
 When called, C<new()> searches the the directories returned by
 C<search_bin_dirs()> for an executable with a name returned by
-C<search_exe_names()>. If found, the executable (hereafer referred to as
+C<search_exe_names()>. If found, the executable (hereafter referred to as
 F<httpd>, regardless of how it was actually found to be named) will be called
 by the object methods below to gather the data necessary for each. If F<httpd>
 cannot be found, then Apache is assumed not to be installed, and each of the
@@ -662,7 +662,7 @@ sub compile_option {
 
 Returns the full path to the Apache configuration file. C<conf_file()> looks
 for the configuration file in a number of locations and under a number of
-names. First it tries to use the file specifed by the C<SERVER_CONFIG_FILE>
+names. First it tries to use the file specified by the C<SERVER_CONFIG_FILE>
 compile option (as returned by a call to C<compile_option()>) -- and if it's a
 relative file name, it gets appended to the directory returned by
 C<httpd_root()>. If that file isn't found, C<conf_file()> then looks for a
@@ -752,6 +752,8 @@ Cannot parse group from file
 
 Cannot parse port from file
 
+Cannot parse DocumentRoot from file
+
 =item unknown
 
 Location of httpd.conf file?
@@ -775,16 +777,20 @@ my $parse_conf_file = sub {
 
     # This is the place to add more regexes to collect stuff from the
     # config file in the future.
-    my @regexen = (qr/^\s*User\s+(.*)$/,
-                   qr/^\s*Group\s+(.*)$/,
-                   qr/^\s*Port\s+(.*)$/ );
-    my ($usr, $grp, $prt) = $u->multi_search_file($conf, @regexen);
+    my @regexen = (
+        qr/^\s*User\s+(.*)$/,
+        qr/^\s*Group\s+(.*)$/,
+        qr/^\s*Port\s+(.*)$/,
+        qr/^\s*DocumentRoot\s+"?([^"]+)"?\s*$/,
+    );
+    my ($usr, $grp, $prt, $droot) = $u->multi_search_file($conf, @regexen);
     # Issue a warning if we couldn't find the user and group.
     $self->error("Cannot parse user from file '$conf'") unless $usr;
     $self->error("Cannot parse group from file '$conf'") unless $grp;
     $self->error("Cannot parse port from file '$conf'") unless $prt;
+    $self->error("Cannot parse DocumentRoot from file '$conf'") unless $droot;
     # Assign them anyway.
-    @{$self}{qw(user group port)} = ($usr, $grp, $prt);
+    @{$self}{qw(user group port doc_root)} = ($usr, $grp, $prt, $droot);
 };
 
 sub user {
@@ -828,6 +834,8 @@ Cannot parse user from file
 Cannot parse group from file
 
 Cannot parse port from file
+
+Cannot parse DocumentRoot from file
 
 =item unknown
 
@@ -882,6 +890,8 @@ Cannot parse group from file
 
 Cannot parse port from file
 
+Cannot parse DocumentRoot from file
+
 =item unknown
 
 Location of httpd.conf file?
@@ -905,6 +915,61 @@ sub port {
       unless $self->{port};
     return $self->{port};
 }
+
+##############################################################################
+
+=head3 doc_root
+
+Returns the local physical path where web pages are stored. This value is
+collected from Apache configuration file as returned by C<conf_file()>.
+
+B<Events:>
+
+=over 4
+
+=item info
+
+Searching for Apache configuration file
+
+Executing `httpd -V`
+
+Parsing Apache configuration file
+
+=item error
+
+No Apache config file found
+
+Cannot parse user from file
+
+Cannot parse group from file
+
+Cannot parse port from file
+
+Cannot parse DocumentRoot from file
+
+=item unknown
+
+Location of httpd.conf file?
+
+Enter DocumentRoot actual directory
+
+=back
+
+=cut
+
+sub doc_root {
+    my $self = shift;
+    return unless $self->{executable};
+    $parse_conf_file->($self) unless exists $self->{doc_root};
+    # Handle an unknown value.
+    $self->{doc_root} = $self->unknown(
+        key      => 'doc root',
+        prompt   => 'Enter DocumentRoot directory',
+        callback => $is_dir,
+        error    => "Not a directory"
+    ) unless $self->{doc_root};
+    return $self->{doc_root};
+} # doc_root
 
 ##############################################################################
 
@@ -933,7 +998,7 @@ sub executable { shift->{executable} }
   my $bin_dir = $apache->bin_dir;
 
 Returns the SQLite binary directory path. App::Info::HTTPD::Apache simply
-retreives it as the directory part of the path to the HTTPD executable.
+retrieves it as the directory part of the path to the HTTPD executable.
 
 =cut
 
@@ -1317,8 +1382,8 @@ sub download_url { "http://www.apache.org/dist/httpd/" }
 
   my @search_exe_names = $apache->search_exe_names;
 
-Returns a list of possible names for the Apache executabl; F<.exe> is appended
-to each on Win32. By default, the names are:
+Returns a list of possible names for the Apache executable; F<.exe> is
+appended to each on Win32. By default, the names are:
 
 =over
 
