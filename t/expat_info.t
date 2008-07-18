@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: expat_info.t 682 2004-09-28 05:59:10Z david $
+# $Id: expat_info.t 4126 2008-07-16 18:10:10Z david $
 
 use strict;
 use Test::More tests => 22;
