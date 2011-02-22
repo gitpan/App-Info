@@ -1,6 +1,6 @@
 package App::Info::Util;
 
-# $Id: Util.pm 3929 2008-05-18 03:58:14Z david $
+# $Id: Util.pm 4911 2011-02-22 20:59:01Z david $
 
 =head1 NAME
 
@@ -49,7 +49,7 @@ use File::Spec ();
 use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(File::Spec);
-$VERSION = '0.55';
+$VERSION = '0.56';
 
 my %path_dems = (
     MacOS   => qr',',
@@ -495,8 +495,10 @@ sub lib_dirs {
     grep { defined and length }
     map { split ' ' }
     grep { defined }
-    $Config{libsdirs},
-    $Config{loclibpth},
+    # Quote Config access to work around
+    # http://bugs.activestate.com/show_bug.cgi?id=89447
+    "$Config{libsdirs}",
+    "$Config{loclibpth}",
     '/sw/lib';
 }
 

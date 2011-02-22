@@ -1,6 +1,6 @@
 package App::Info::Handler::Print;
 
-# $Id: Print.pm 3929 2008-05-18 03:58:14Z david $
+# $Id: Print.pm 4137 2008-07-18 16:17:45Z david $
 
 =head1 NAME
 
@@ -54,7 +54,7 @@ print event messages to different filehandle.
 use strict;
 use App::Info::Handler;
 use vars qw($VERSION @ISA);
-$VERSION = '0.55';
+$VERSION = '0.56';
 @ISA = qw(App::Info::Handler);
 
 # Register ourselves.

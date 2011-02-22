@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# $Id: apache_info.t 2798 2006-04-08 05:33:56Z david $
+# $Id: apache_info.t 4912 2011-02-22 21:01:20Z david $
 
 use strict;
 use Test::More tests => 79;
@@ -164,12 +164,12 @@ ok( ! defined $info->message, "No more magic_number info" );
 
 ##########################################################################
 # Test compile_option().
-$apache->compile_option;
+$apache->compile_option('foo');
 ok( ! defined $info->message, "No compile_option info" );
 ok( $apache = App::Info::HTTPD::Apache->new( @params, on_info => $info ),
     "Got Object 10");
 $info->message; # Throw away constructor message.
-$apache->compile_option;
+$apache->compile_option('foo');
 like($info->message, qr/^Executing `"t.$scripts.httpd(?:.bat)?" -V`$/,
       "Check compile_option info" );
 ok( ! defined $info->message, "No more compile_option info" );

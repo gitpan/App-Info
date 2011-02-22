@@ -1,6 +1,6 @@
 package App::Info::RDBMS::SQLite;
 
-# $Id: SQLite.pm 3929 2008-05-18 03:58:14Z david $
+# $Id: SQLite.pm 4878 2010-11-25 03:42:49Z david $
 
 =head1 NAME
 
@@ -43,10 +43,9 @@ triggered once, by whichever of those four methods is called first.
 use strict;
 use App::Info::RDBMS;
 use App::Info::Util;
-use Config;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.55';
+$VERSION = '0.56';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
