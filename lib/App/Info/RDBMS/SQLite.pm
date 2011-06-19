@@ -1,7 +1,5 @@
 package App::Info::RDBMS::SQLite;
 
-# $Id: SQLite.pm 4878 2010-11-25 03:42:49Z david $
-
 =head1 NAME
 
 App::Info::RDBMS::SQLite - Information about SQLite
@@ -45,7 +43,7 @@ use App::Info::RDBMS;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::RDBMS);
-$VERSION = '0.56';
+$VERSION = '0.57';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -872,14 +870,19 @@ sub search_inc_dirs {
 1;
 __END__
 
-=head1 BUGS
+=head1 SUPPORT
 
-Please send bug reports to <bug-app-info@rt.cpan.org> or file them at
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
+This module is stored in an open L<GitHub
+repository|http://github.com/theory/app-info/>. Feel free to fork and
+contribute!
+
+Please file bug reports via L<GitHub
+Issues|http://github.com/theory/app-info/issues/> or by sending mail to
+L<bug-App-Info@rt.cpan.org|mailto:bug-App-Info@rt.cpan.org>.
 
 =head1 AUTHOR
 
-David Wheeler <david@justatheory.com>
+David E. Wheeler <david@justatheory.com>
 
 =head1 SEE ALSO
 
@@ -895,7 +898,7 @@ L<http://www.sqlite.org/> is the SQLite home page.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2004-2008, David Wheeler. Some Rights Reserved.
+Copyright (c) 2004-2011, David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

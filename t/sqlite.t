@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: sqlite.t 925 2004-12-14 19:19:32Z david $
-
 use strict;
 use Test::More tests => 18;
 use File::Spec::Functions;

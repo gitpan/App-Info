@@ -37,13 +37,19 @@ my $class = Module::Build->subclass(
 my $build = $class->new(
     module_name        => 'App::Info',
     license            => 'perl',
-    create_makefile_pl => 'passthrough',
     configure_requires => { 'Module::Build' => '0.2701' },
-    recommends         => { 'Test::Pod'     => '1.20'   },
+    recommends         => { 'Test::Pod'     => '1.41'   },
     requires           => { File::Spec    => 0          },
     build_requires     => {
         'Module::Build' => '0.2701',
         'Test::More'    => '0.17',
+    },
+    meta_merge => {
+        resources => {
+            homepage   => 'http://search.cpan.org/dist/App-Info/',
+            bugtracker => 'http://github.com/theory/app-info/issues/',
+            repository => 'http://github.com/theory/app-info/',
+        }
     },
 );
 $build->create_build_script;

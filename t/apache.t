@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: apache.t 4732 2009-10-19 17:09:00Z david $
-
 use strict;
 use Test::More tests => 33;
 use File::Spec::Functions;

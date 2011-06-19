@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: apache_info.t 4912 2011-02-22 21:01:20Z david $
-
 use strict;
 use Test::More tests => 79;
 use lib 't/lib';

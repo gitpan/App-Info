@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: errors.t 1268 2005-02-14 18:04:50Z david $
-
 use strict;
 use Test::More tests => 3;
 

@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: expat.t 897 2004-12-06 23:28:11Z david $
-
 use strict;
 use Test::More tests => 20;
 use File::Spec::Functions;

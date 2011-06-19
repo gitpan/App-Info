@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: postgres.t 954 2004-12-16 01:10:26Z david $
-
 use strict;
 use Test::More tests => 21;
 use File::Spec::Functions;

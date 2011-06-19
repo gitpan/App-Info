@@ -1,7 +1,5 @@
 package App::Info::HTTPD::Apache;
 
-# $Id: Apache.pm 4732 2009-10-19 17:09:00Z david $
-
 =head1 NAME
 
 App::Info::HTTPD::Apache - Information about Apache web server
@@ -44,7 +42,7 @@ use App::Info::HTTPD;
 use App::Info::Util;
 use vars qw(@ISA $VERSION);
 @ISA = qw(App::Info::HTTPD);
-$VERSION = '0.56';
+$VERSION = '0.57';
 use constant WIN32 => $^O eq 'MSWin32';
 
 my $u = App::Info::Util->new;
@@ -1858,14 +1856,19 @@ who know a great deal more about interrogating Apache will be most welcome.
 Add method to return the names of available DSOs. These should either be
 parsed from the F<httpd.conf> file or C<glob>bed from the file system.
 
-=head1 BUGS
+=head1 SUPPORT
 
-Please send bug reports to <bug-app-info@rt.cpan.org> or file them at
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App-Info>.
+This module is stored in an open L<GitHub
+repository|http://github.com/theory/app-info/>. Feel free to fork and
+contribute!
+
+Please file bug reports via L<GitHub
+Issues|http://github.com/theory/app-info/issues/> or by sending mail to
+L<bug-App-Info@rt.cpan.org|mailto:bug-App-Info@rt.cpan.org>.
 
 =head1 AUTHOR
 
-David Wheeler <david@justatheory.com> based on code by Sam Tregar
+David E. Wheeler <david@justatheory.com> based on code by Sam Tregar
 <sam@tregar.com>.
 
 =head1 SEE ALSO
@@ -1883,7 +1886,7 @@ L<http://perl.apache.org/> is the mod_perl home page.
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2002-2008, David Wheeler. Some Rights Reserved.
+Copyright (c) 2002-2011, David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under the
 same terms as Perl itself.

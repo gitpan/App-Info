@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: print.t 1075 2005-01-08 00:29:13Z david $
-
 # Make sure that we can use the stuff that's in our local lib directory.
 BEGIN {
     if( $ENV{PERL_CORE} ) {

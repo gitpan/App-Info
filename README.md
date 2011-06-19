@@ -1,4 +1,4 @@
-App/Info version 0.56
+App/Info version 0.57
 =====================
 
 App::Info provides a generalized interface for providing metadata about
@@ -25,32 +25,34 @@ App::Info abstract base class relevant to the category of software they're
 managing, e.g. App::Info::HTTPD or App::Info::RDBMS. New categories will be
 added as needed.
 
-INSTALLATION
+Installation
+------------
 
 To install this module, type the following:
 
-   perl Build.PL
-   ./Build
-   ./Build test
-   ./Build install
+    perl Build.PL
+    ./Build
+    ./Build test
+    ./Build install
 
 Or, if you don't have Module::Build installed, type the following:
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+    perl Makefile.PL
+    make
+    make test
+    make install
 
-DEPENDENCIES
+Dependencies
+------------
 
 This module requires these other modules and libraries:
 
-  File::Spec
-  Test::More -- For testing only -- part of the Test::Simple distribution.
+* File::Spec
+* Test::More -- For testing only -- part of the Test::Simple distribution.
 
 COPYRIGHT AND LICENCE
 
-Copyright (c) 2002-2008, David Wheeler. Some Rights Reserved.
+Copyright (c) 2002-2011, David E. Wheeler. Some Rights Reserved.
 
 This module is free software; you can redistribute it and/or modify it under
 the same terms as Perl itself.

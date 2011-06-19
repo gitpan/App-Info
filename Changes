@@ -1,5 +1,11 @@
 Revision history for Perl extension App::Info.
 
+0.57  2011-06-19T06:14:46
+      - Removed `Makefile.PL`. It used Module::Build internally, which is
+        deprecated.
+      - Moved repository to [GitHub](https://github.com/theory/app-info/).
+      - Added repository and bug reporting metadata.
+
 0.56  2011-02-22T21:02:39
       - Added `cgibin_physical()` and `cgibin_virtual()` to
         SVN::Notify::HTTPD::Apache. Patch from Martin Thurn.

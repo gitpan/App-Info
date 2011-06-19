@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: uuid.t 2573 2006-02-04 03:53:39Z david $
-
 use strict;
 use Test::More tests => 23;
 use File::Spec::Functions;

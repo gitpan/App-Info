@@ -1,7 +1,5 @@
 #!/usr/bin/perl -w
 
-# $Id: postgres_info.t 4134 2008-07-18 16:14:15Z david $
-
 use strict;
 use Test::More tests => 22;
 use constant SKIP => 18;
